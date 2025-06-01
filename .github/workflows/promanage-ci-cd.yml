@@ -40,7 +40,7 @@ jobs:
       - name: Build frontend
         run: |
           cd front-end
-          npm run build -- --configuration=production --aot --progress=false --skip-styles-optimization --budget-error=10mb --budget-warning=8mb
+          npm run build -- --configuration=production
       
       # ===== DOCKER =====
       - name: Login to Docker Hub
