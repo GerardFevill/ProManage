@@ -40,7 +40,7 @@ jobs:
       - name: Build frontend
         run: |
           cd front-end
-          npm run build -- --configuration=production --aot --build-optimizer --progress=false
+          npm run build -- --configuration=production --aot --progress=false
       
       # ===== DOCKER =====
       - name: Login to Docker Hub
