@@ -24,8 +24,8 @@ jobs:
       
       - name: Update docker-compose.yml with latest image tags
         run: |
-          sed -i "s|image: .*promanage-backend:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/promanage-backend:${{ github.sha }}|g" docker-compose.yml
-          sed -i "s|image: .*promanage-frontend:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/promanage-frontend:${{ github.sha }}|g" docker-compose.yml
+          sed -i "s|image: .*promanage-backend:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/promanage-backend:latest|g" docker-compose.yml
+          sed -i "s|image: .*promanage-frontend:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/promanage-frontend:latest|g" docker-compose.yml
       
       # Si vous utilisez un serveur de déploiement, vous pouvez ajouter des étapes pour copier le docker-compose.yml et le déployer
       # Par exemple avec SSH:
