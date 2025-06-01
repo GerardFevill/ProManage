@@ -1,0 +1,104 @@
+<div class="company-form">
+  <div class="form-header">
+    <h2>{{ editMode ? 'Modifier' : 'Créer' }} une société</h2>
+  </div>
+
+  <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Nom <span class="required">*</span></label>
+      <input 
+        type="text" 
+        id="name" 
+        formControlName="name"
+        [class.invalid]="companyForm.get('name')?.invalid && companyForm.get('name')?.touched"
+      >
+      <div class="error-message" *ngIf="companyForm.get('name')?.invalid && companyForm.get('name')?.touched">
+        Le nom est requis
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea 
+        id="description" 
+        formControlName="description"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email"
+          [class.invalid]="companyForm.get('email')?.invalid && companyForm.get('email')?.touched"
+        >
+        <div class="error-message" *ngIf="companyForm.get('email')?.invalid && companyForm.get('email')?.touched">
+          Email invalide
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Téléphone</label>
+        <input 
+          type="tel" 
+          id="phone" 
+          formControlName="phone"
+        >
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="address">Adresse</label>
+      <textarea 
+        id="address" 
+        formControlName="address"
+        rows="2"
+      ></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="siret">SIRET (siège)</label>
+        <input 
+          type="text" 
+          id="siret" 
+          formControlName="siret"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="legalForm">Forme juridique</label>
+        <input 
+          type="text" 
+          id="legalForm" 
+          formControlName="legalForm"
+        >
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="vatNumber">Numéro de TVA</label>
+      <input 
+        type="text" 
+        id="vatNumber" 
+        formControlName="vatNumber"
+      >
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="onCancel()">
+        Annuler
+      </button>
+      <button 
+        type="submit" 
+        class="btn-submit" 
+        [disabled]="!companyForm.valid"
+      >
+        {{ editMode ? 'Mettre à jour' : 'Créer' }}
+      </button>
+    </div>
+  </form>
+</div>

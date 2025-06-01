@@ -1,0 +1,21 @@
+:root {
+  // Base colors
+  --primary-color: #2196f3;
+  --info-color: #0288d1;
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --danger-color: #f44336;
+  --text-color: #424242;
+
+  // Background colors
+  --hover-bg: rgba(0, 0, 0, 0.04);
+  --primary-bg-light: rgba(33, 150, 243, 0.1);
+  --info-bg-light: rgba(2, 136, 209, 0.1);
+  --danger-bg-light: rgba(244, 67, 54, 0.1);
+
+  // Accounting colors
+  --debit-color: var(--primary-color);    // Blue for debits
+  --credit-color: var(--warning-color);   // Orange for credits
+  --success: var(--success-color);        // Green for positive balances
+  --error: var(--danger-color);          // Red for negative balances
+}

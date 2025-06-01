@@ -1,0 +1,52 @@
+.fiscal-year-card-compact {
+  height: 100px;
+  border: 1px solid var(--accent-primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 100%; 
+  min-width: 0; 
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--bg-primary);
+    border:0px
+  }
+
+  .card-content {
+    flex: 1;
+    padding: 1rem;
+    min-width: 0; 
+
+    .main-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      gap: 1rem; 
+
+      h4 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0; 
+      }
+
+      
+    }
+
+    .dates {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

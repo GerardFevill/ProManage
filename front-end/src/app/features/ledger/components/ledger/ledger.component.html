@@ -1,0 +1,55 @@
+<div class="ledger-container">
+  <div class="filters" [formGroup]="filterForm">
+    <div class="form-group">
+      <label for="startDate">Date de début</label>
+      <input 
+        type="date" 
+        id="startDate"
+        formControlName="startDate"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="endDate">Date de fin</label>
+      <input 
+        type="date" 
+        id="endDate"
+        formControlName="endDate"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="accountId">Compte</label>
+      <input 
+        id="accountId"
+        formControlName="accountId"
+        placeholder="Numéro de compte"
+      >
+    </div>
+  </div>
+
+  <div class="ledger-list">
+    <div *ngFor="let ledger of ledgers" class="ledger-account">
+      <div class="account-header" (click)="selectAccount(ledger.accountId)">
+        <h3>{{ ledger.accountName }}</h3>
+        <div class="account-totals">
+          <span class="debit">Débit: {{ ledger.totalDebit | amount }}</span>
+          <span class="credit">Crédit: {{ ledger.totalCredit | amount }}</span>
+          <span [class.positive]="ledger.balance > 0" 
+                [class.negative]="ledger.balance < 0"
+                [class.zero]="ledger.balance === 0">
+            Solde: {{ ledger.balance | balance }}
+          </span>
+        </div>
+      </div>
+
+      <div class="account-entries" *ngIf="selectedAccount === ledger.accountId">
+        <app-data-table
+          [columns]="columns"
+          [data]="ledger.entries"
+          [showActions]="false">
+        </app-data-table>
+      </div>
+    </div>
+  </div>
+</div>

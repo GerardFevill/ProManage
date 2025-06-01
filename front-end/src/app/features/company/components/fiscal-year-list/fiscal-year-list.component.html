@@ -1,0 +1,27 @@
+<ng-container *ngIf="company && company.id">
+  <div class="fiscal-years">
+    <div class="header">
+      <div class="header-actions">
+        <a [routerLink]="['/companies', company.id, 'fiscal-years']" class="btn-view-all">
+          <i class="bi bi-list"></i>
+          Années Fiscales (toutes)
+        </a>
+      </div>
+    </div>
+    <ng-container *ngIf="getFilteredFiscalYears() as fiscalYears">
+      <div class="fiscal-year-grid" *ngIf="fiscalYears.length > 0; else noData">
+        <app-fiscal-year-card-compact
+          *ngFor="let fiscalYear of fiscalYears; trackBy: trackByFiscalYear"
+          [fiscalYear]="fiscalYear"
+          [companyId]="company.id"
+        ></app-fiscal-year-card-compact>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-template #noData>
+  <div class="no-data">
+    Aucune année fiscale active ou en attente.
+  </div>
+</ng-template>

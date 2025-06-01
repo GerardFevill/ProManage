@@ -1,0 +1,38 @@
+<div class="table-container">
+  <div class="loading" *ngIf="loading">
+    Chargement...
+  </div>
+
+  <table class="data-table" *ngIf="!loading">
+    <thead>
+      <tr>
+        <th *ngFor="let col of columns">{{ col.label }}</th>
+        <th *ngIf="showActions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data" 
+          [attr.data-is-header]="item.isHeader"
+          [attr.data-is-total]="item.isTotal"
+          [attr.data-is-final-total]="item.isFinalTotal"
+          [attr.data-is-sub-total]="item.isSubTotal"
+          [attr.data-is-net]="item.isNet"
+          [attr.data-is-negative]="item.isNegative">
+        <td *ngFor="let col of columns" 
+            [class.amount-cell]="col.pipe === 'amount'"
+            [class.positive]="isPositive(item[col.key])"
+            [class.negative]="isNegative(item[col.key])">
+          <ng-container [ngSwitch]="col.pipe">
+            <span *ngSwitchCase="'amount'">{{ item[col.key] | amount }}</span>
+            <span *ngSwitchCase="'date'">{{ item[col.key] | date:'dd/MM/yyyy' }}</span>
+            <span *ngSwitchDefault>{{ item[col.key] }}</span>
+          </ng-container>
+        </td>
+        <td class="actions-cell" *ngIf="showActions && actionsTemplate">
+          <ng-container *ngTemplateOutlet="actionsTemplate; context: { $implicit: item }">
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

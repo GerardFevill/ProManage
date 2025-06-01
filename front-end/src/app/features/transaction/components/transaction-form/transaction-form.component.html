@@ -1,0 +1,138 @@
+<div class="transaction-form">
+  <div class="form-header">
+    <h2>{{ isEditing ? 'Modifier la transaction' : 'Nouvelle transaction' }}</h2>
+  </div>
+  
+  <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="date">Date <span class="required">*</span></label>
+        <input 
+          type="date" 
+          id="date" 
+          formControlName="date"
+          [class.invalid]="transactionForm.get('date')?.invalid && transactionForm.get('date')?.touched"
+        >
+        <div class="error-message" *ngIf="transactionForm.get('date')?.invalid && transactionForm.get('date')?.touched">
+          La date est obligatoire
+        </div>
+      </div>
+    </div>
+
+    <div formArrayName="lines">
+      <!-- Ligne de débit -->
+      <div [formGroupName]="0" class="form-row">
+        <div class="form-group">
+          <label>Compte débité <span class="required">*</span></label>
+          <select 
+            formControlName="account_id"
+            [class.invalid]="transactionForm.get('lines.0.account_id')?.invalid && transactionForm.get('lines.0.account_id')?.touched"
+          >
+            <option value="">Sélectionner un compte</option>
+            <ng-container *ngIf="!(accountsLoading$ | async)">
+              <option *ngFor="let account of accounts$ | async" [value]="account.id">
+                {{account.code}} - {{account.name}}
+              </option>
+            </ng-container>
+            <option *ngIf="accountsLoading$ | async" disabled>Chargement des comptes...</option>
+          </select>
+          <div class="error-message" *ngIf="transactionForm.get('lines.0.account_id')?.invalid && transactionForm.get('lines.0.account_id')?.touched">
+            Le compte débité est obligatoire
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Montant débit <span class="required">*</span></label>
+          <input 
+            type="number" 
+            formControlName="amount"
+            step="0.01"
+            [class.invalid]="transactionForm.get('lines.0.amount')?.invalid && transactionForm.get('lines.0.amount')?.touched"
+          >
+          <div class="error-message" *ngIf="transactionForm.get('lines.0.amount')?.invalid && transactionForm.get('lines.0.amount')?.touched">
+            <span *ngIf="transactionForm.get('lines.0.amount')?.errors?.['required']">Le montant est obligatoire</span>
+            <span *ngIf="transactionForm.get('lines.0.amount')?.errors?.['min']">Le montant doit être positif</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ligne de crédit -->
+      <div [formGroupName]="1" class="form-row">
+        <div class="form-group">
+          <label>Compte crédité <span class="required">*</span></label>
+          <select 
+            formControlName="account_id"
+            [class.invalid]="transactionForm.get('lines.1.account_id')?.invalid && transactionForm.get('lines.1.account_id')?.touched"
+          >
+            <option value="">Sélectionner un compte</option>
+            <ng-container *ngIf="!(accountsLoading$ | async)">
+              <option *ngFor="let account of accounts$ | async" [value]="account.id">
+                {{account.code}} - {{account.name}}
+              </option>
+            </ng-container>
+            <option *ngIf="accountsLoading$ | async" disabled>Chargement des comptes...</option>
+          </select>
+          <div class="error-message" *ngIf="transactionForm.get('lines.1.account_id')?.invalid && transactionForm.get('lines.1.account_id')?.touched">
+            Le compte crédité est obligatoire
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Montant crédit <span class="required">*</span></label>
+          <input 
+            type="number" 
+            formControlName="amount"
+            step="0.01"
+            [class.invalid]="transactionForm.get('lines.1.amount')?.invalid && transactionForm.get('lines.1.amount')?.touched"
+          >
+          <div class="error-message" *ngIf="transactionForm.get('lines.1.amount')?.invalid && transactionForm.get('lines.1.amount')?.touched">
+            <span *ngIf="transactionForm.get('lines.1.amount')?.errors?.['required']">Le montant est obligatoire</span>
+            <span *ngIf="transactionForm.get('lines.1.amount')?.errors?.['min']">Le montant doit être positif</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="description">Description <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="description" 
+          formControlName="description"
+          placeholder="Description de la transaction"
+          [class.invalid]="transactionForm.get('description')?.invalid && transactionForm.get('description')?.touched"
+        >
+        <div class="error-message" *ngIf="transactionForm.get('description')?.invalid && transactionForm.get('description')?.touched">
+          La description est obligatoire
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="reference">Référence</label>
+        <input 
+          type="text" 
+          id="reference" 
+          formControlName="reference"
+          placeholder="Référence optionnelle"
+        >
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group checkbox-group">
+        <label>
+          <input type="checkbox" formControlName="is_forecast">
+          Transaction prévisionnelle
+        </label>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Annuler</button>
+      <button type="submit" class="btn btn-primary" [disabled]="transactionForm.invalid">
+        {{ isEditing ? 'Modifier' : 'Créer' }}
+      </button>
+    </div>
+  </form>
+</div>

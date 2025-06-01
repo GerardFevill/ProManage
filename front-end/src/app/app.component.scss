@@ -1,0 +1,27 @@
+.content-wrapper {
+  padding: 0.5rem;
+  height: 100vh;
+  overflow-y: auto;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  transition: all 0.3s ease;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    padding: 0.5rem;
+  }
+}
+
+// Add glass effect to cards and containers
+.card, .container {
+  background: rgba(var(--bg-secondary-rgb), 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px var(--shadow-color);
+  }
+}

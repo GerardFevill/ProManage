@@ -1,0 +1,39 @@
+<div class="bilan-container">
+  <div class="filters" [formGroup]="filterForm">
+    <div class="form-group">
+      <label for="date">Date du bilan</label>
+      <input type="date" id="date" formControlName="date">
+    </div>
+    <div class="form-group">
+      <label for="previousDate">Date de l'exercice précédent</label>
+      <input type="date" id="previousDate" formControlName="previousDate">
+    </div>
+  </div>
+
+  <div >
+    <div *ngIf="loading" class="text-center my-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+
+    <div *ngIf="!loading && !error">
+        <div class="row">
+          <div class="col-md-6">
+            <h5 >Actif</h5>
+            <app-data-table [columns]="columns" [data]="actifRows" [loading]="loading" [showActions]="false">
+            </app-data-table>
+          </div>
+          <div class="col-md-6">
+            <h5 >Passif</h5>
+            <app-data-table [columns]="columns" [data]="passifRows" [loading]="loading" [showActions]="false">
+            </app-data-table>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

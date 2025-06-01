@@ -1,0 +1,60 @@
+<div class="financial-summary">
+  <div class="card summary-card">
+    <div class="card-header">
+      <h4>Résumé Financier</h4>
+      <span class="period">Année fiscale en cours</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="metric">
+            <div class="metric-label">Revenus</div>
+            <div class="metric-value">{{ formatCurrency(financialData.revenue) }}</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="metric">
+            <div class="metric-label">Dépenses</div>
+            <div class="metric-value">{{ formatCurrency(financialData.expenses) }}</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="metric">
+            <div class="metric-label">Résultat</div>
+            <div class="metric-value profit">{{ formatCurrency(financialData.profit) }}</div>
+            <div class="metric-change" [ngClass]="getChangeClass(financialData.profitChange)">
+              <i class="bi" [ngClass]="getChangeIcon(financialData.profitChange)"></i>
+              {{ financialData.profitChange }}%
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="profit-margin mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="profit-margin-label">Marge bénéficiaire</div>
+          <div class="profit-margin-value">{{ formatPercentage(financialData.profitMargin) }}</div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" [style.width.%]="financialData.profitMargin" 
+               aria-valuenow="financialData.profitMargin" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+      
+      <div class="top-expenses mt-4">
+        <h5>Principales dépenses</h5>
+        <div class="expense-item" *ngFor="let expense of financialData.topExpenses">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <div class="expense-category">{{ expense.category }}</div>
+            <div class="expense-amount">{{ formatCurrency(expense.amount) }}</div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar bg-info" role="progressbar" [style.width.%]="expense.percentage" 
+                 aria-valuenow="expense.percentage" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div class="expense-percentage">{{ formatPercentage(expense.percentage) }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

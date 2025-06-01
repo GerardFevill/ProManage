@@ -1,0 +1,32 @@
+<div class="stats-card" [ngClass]="[cardClass, isExpanded ? 'expanded' : '']">
+  <div class="card-header">
+    <i class="bi" [ngClass]="iconClass"></i>
+    <!-- Afficher soit la valeur passée directement, soit le total calculé des stats -->
+    <h3>{{ title }} <span class="value" [appAmountColor]="value ? 0 : total">{{ value || (total | amount) }}</span></h3>
+    <button class="expand-btn" (click)="toggleExpand()">
+      <i class="bi" [ngClass]="isExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+    </button>
+  </div>
+  <div class="card-content" [class.expanded]="isExpanded">
+    <div class="items-container" *ngIf="isExpanded">
+      <!-- Utiliser items s'il est fourni, sinon utiliser stats -->
+      <ng-container *ngIf="items && items.length > 0; else statsItems">
+        <div class="item" *ngFor="let item of items">
+          <div class="item-content">
+            <span class="item-label">{{ item.label }}</span>
+            <span class="item-value">{{ item.value }}</span>
+          </div>
+        </div>
+      </ng-container>
+      
+      <ng-template #statsItems>
+        <div class="item" *ngFor="let item of stats">
+          <div class="item-content">
+            <span class="item-label">{{ item.label }}</span>
+            <span class="item-value" [appAmountColor]="item.value">{{ item.value | amount }}</span>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,309 @@
+.forecast-container {
+  padding: 20px;
+  width: 100%;
+  height: calc(100vh - 60px);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .forecast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--bg-secondary);
+
+    h2 {
+      color: var(--text-primary);
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .period-selector {
+      display: flex;
+      gap: 10px;
+
+      button {
+        padding: 8px 16px;
+        border: 1px solid var(--bg-secondary);
+        border-radius: 4px;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+
+        &:hover {
+          background: var(--sidebar-bg);
+        }
+
+        &.active {
+          background: var(--accent-primary);
+          color: var(--text-primary);
+          border-color: var(--accent-hover);
+        }
+      }
+    }
+  }
+
+  .forecast-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 20px;
+    height: calc(100% - 60px);
+    overflow: hidden;
+
+    .forecast-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+      padding-right: 10px;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: var(--bg-secondary);
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--sidebar-bg);
+        border-radius: 4px;
+      }
+
+      .summary-section,
+      .ratios-section,
+      .forecast-form {
+        background: var(--bg-secondary);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+
+        h3 {
+          color: var(--text-primary);
+          margin: 0 0 20px 0;
+          font-size: 1.1rem;
+        }
+      }
+
+      .stats-cards {
+        display: grid;
+        gap: 15px;
+
+        .stat-card {
+          background: var(--bg-primary);
+          padding: 15px;
+          border-radius: 6px;
+          border: 1px solid var(--sidebar-bg);
+
+          .stat-title {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+          }
+
+          .stat-value {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+
+            &.positive {
+              color: #4caf50;
+            }
+
+            &.negative {
+              color: #f44336;
+            }
+          }
+
+          .stat-change {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            &.positive {
+              color: #4caf50;
+            }
+
+            &.negative {
+              color: #f44336;
+            }
+
+            i {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+
+      .ratio-grid {
+        display: grid;
+        gap: 15px;
+
+        .ratio-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px;
+          background: var(--bg-primary);
+          border-radius: 6px;
+          border: 1px solid var(--sidebar-bg);
+
+          .ratio-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+          }
+
+          .ratio-value {
+            font-weight: 500;
+            font-size: 1rem;
+
+            &.positive {
+              color: #4caf50;
+            }
+
+            &.warning {
+              color: #ffd700;
+            }
+
+            &.negative {
+              color: #f44336;
+            }
+          }
+        }
+      }
+
+      .forecast-form {
+        .form-group {
+          margin-bottom: 15px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+          }
+
+          input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--sidebar-bg);
+            border-radius: 4px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+
+            &:focus {
+              outline: none;
+              border-color: var(--accent-primary);
+            }
+          }
+        }
+      }
+    }
+
+    .forecast-main {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+      padding-right: 10px;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: var(--bg-secondary);
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--sidebar-bg);
+        border-radius: 4px;
+      }
+
+      .chart-container {
+        background: var(--bg-secondary);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+
+        ::ng-deep {
+          .highcharts-background {
+            fill: var(--bg-secondary);
+          }
+
+          .highcharts-title,
+          .highcharts-axis-title,
+          .highcharts-axis-labels {
+            fill: var(--text-primary) !important;
+          }
+
+          .highcharts-grid-line {
+            stroke: var(--sidebar-bg);
+          }
+
+          .highcharts-axis-line {
+            stroke: var(--sidebar-bg);
+          }
+
+          .highcharts-legend-item text {
+            fill: var(--text-secondary) !important;
+          }
+        }
+      }
+
+      .details-table {
+        background: var(--bg-secondary);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        overflow-x: auto;
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+
+          th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--sidebar-bg);
+            white-space: nowrap;
+            font-size: 0.9rem;
+          }
+
+          th {
+            color: var(--text-secondary);
+            font-weight: 500;
+          }
+
+          td {
+            color: var(--text-primary);
+
+            &.positive {
+              color: #4caf50;
+            }
+
+            &.negative {
+              color: #f44336;
+            }
+
+            &.warning {
+              color: #ffd700;
+            }
+          }
+        }
+      }
+    }
+  }
+}

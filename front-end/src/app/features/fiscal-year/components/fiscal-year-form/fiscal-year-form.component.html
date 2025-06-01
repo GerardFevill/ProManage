@@ -1,0 +1,87 @@
+<div class="fiscal-year-form">
+  <div class="header">
+    <h3>{{ isEdit ? 'Modifier' : 'Nouvelle' }} Année Fiscale</h3>
+  </div>
+
+  <form [formGroup]="fiscalYearForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Nom</label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        class="form-control"
+        [class.is-invalid]="name?.invalid && (name?.dirty || name?.touched)"
+      >
+      <div class="invalid-feedback" *ngIf="name?.errors?.['required']">
+        Le nom est requis
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="startDate">Date de début</label>
+      <input
+        type="date"
+        id="startDate"
+        formControlName="startDate"
+        class="form-control"
+        [class.is-invalid]="startDate?.invalid && (startDate?.dirty || startDate?.touched)"
+      >
+      <div class="invalid-feedback" *ngIf="startDate?.errors?.['required']">
+        La date de début est requise
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="endDate">Date de fin</label>
+      <input
+        type="date"
+        id="endDate"
+        formControlName="endDate"
+        class="form-control"
+        [class.is-invalid]="endDate?.invalid && (endDate?.dirty || endDate?.touched)"
+      >
+      <div class="invalid-feedback" *ngIf="endDate?.errors?.['required']">
+        La date de fin est requise
+      </div>
+      <div class="invalid-feedback" *ngIf="endDate?.errors?.['endDateInvalid']">
+        La date de fin doit être postérieure à la date de début
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="status">Statut</label>
+      <select
+        id="status"
+        formControlName="status"
+        class="form-select"
+        [class.is-invalid]="status?.invalid && (status?.dirty || status?.touched)"
+      >
+        <option value="active">Actif</option>
+        <option value="pending">En attente</option>
+        <option value="closed">Clôturé</option>
+      </select>
+      <div class="invalid-feedback" *ngIf="status?.errors?.['required']">
+        Le statut est requis
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <textarea
+        id="notes"
+        formControlName="notes"
+        class="form-control"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Annuler</button>
+      <button type="submit" class="btn btn-primary" [disabled]="fiscalYearForm.invalid || loading">
+        <span class="spinner-border spinner-border-sm" *ngIf="loading"></span>
+        {{ isEdit ? 'Modifier' : 'Créer' }}
+      </button>
+    </div>
+  </form>
+</div>

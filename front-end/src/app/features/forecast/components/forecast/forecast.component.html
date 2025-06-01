@@ -1,0 +1,158 @@
+<div class="forecast-container">
+  <div class="forecast-header">
+    <h2>Tableau de Bord Comptable</h2>
+    <div class="period-selector">
+      <button [class.active]="selectedPeriod === 'mois'" (click)="changePeriod('mois')">Mensuel</button>
+      <button [class.active]="selectedPeriod === 'trimestre'" (click)="changePeriod('trimestre')">Trimestriel</button>
+      <button [class.active]="selectedPeriod === 'semestre'" (click)="changePeriod('semestre')">Semestriel</button>
+      <button [class.active]="selectedPeriod === 'annee'" (click)="changePeriod('annee')">Annuel</button>
+    </div>
+  </div>
+
+  <div class="forecast-grid">
+    <div class="forecast-sidebar">
+      <!-- Résumé Financier -->
+      <div class="summary-section">
+        <h3>Résumé Financier</h3>
+        <div class="stats-cards">
+          <div class="stat-card">
+            <div class="stat-title">Chiffre d'Affaires</div>
+            <div class="stat-value">{{totalRevenue | number:'1.0-0'}} €</div>
+            <div class="stat-change" [class.positive]="revenueGrowth >= 0" [class.negative]="revenueGrowth < 0">
+              <i class="fas" [class.fa-arrow-up]="revenueGrowth >= 0" [class.fa-arrow-down]="revenueGrowth < 0"></i>
+              {{revenueGrowth | number:'1.1-1'}}%
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">Charges Totales</div>
+            <div class="stat-value">{{totalExpense | number:'1.0-0'}} €</div>
+            <div class="stat-change" [class.positive]="expenseGrowth < 0" [class.negative]="expenseGrowth >= 0">
+              <i class="fas" [class.fa-arrow-up]="expenseGrowth >= 0" [class.fa-arrow-down]="expenseGrowth < 0"></i>
+              {{expenseGrowth | number:'1.1-1'}}%
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">Résultat Net</div>
+            <div class="stat-value" [class.positive]="netResult >= 0" [class.negative]="netResult < 0">
+              {{netResult | number:'1.0-0'}} €
+            </div>
+            <div class="stat-change" [class.positive]="marginPercentage >= 0" [class.negative]="marginPercentage < 0">
+              Marge nette: {{marginPercentage | number:'1.1-1'}}%
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">Trésorerie</div>
+            <div class="stat-value" [class.positive]="cashFlow >= 0" [class.negative]="cashFlow < 0">
+              {{cashFlow | number:'1.0-0'}} €
+            </div>
+            <div class="stat-change">
+              BFR: {{workingCapital | number:'1.0-0'}} €
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ratios Financiers -->
+      <div class="ratios-section">
+        <h3>Ratios Financiers</h3>
+        <div class="ratio-grid">
+          <div class="ratio-item">
+            <span class="ratio-label">Rentabilité</span>
+            <span class="ratio-value" [class.positive]="profitability >= 0" [class.negative]="profitability < 0">
+              {{profitability | number:'1.1-1'}}%
+            </span>
+          </div>
+          <div class="ratio-item">
+            <span class="ratio-label">Solvabilité</span>
+            <span class="ratio-value" [class.positive]="solvencyRatio >= 1.5" [class.warning]="solvencyRatio >= 1 && solvencyRatio < 1.5" [class.negative]="solvencyRatio < 1">
+              {{solvencyRatio | number:'1.2-2'}}
+            </span>
+          </div>
+          <div class="ratio-item">
+            <span class="ratio-label">Liquidité</span>
+            <span class="ratio-value" [class.positive]="liquidityRatio >= 1.5" [class.warning]="liquidityRatio >= 1 && liquidityRatio < 1.5" [class.negative]="liquidityRatio < 1">
+              {{liquidityRatio | number:'1.2-2'}}
+            </span>
+          </div>
+          <div class="ratio-item">
+            <span class="ratio-label">Autonomie financière</span>
+            <span class="ratio-value" [class.positive]="financialAutonomy >= 0.5" [class.warning]="financialAutonomy >= 0.3 && financialAutonomy < 0.5" [class.negative]="financialAutonomy < 0.3">
+              {{financialAutonomy | number:'1.2-2'}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paramètres de Prévision -->
+      <div class="forecast-form" [formGroup]="forecastForm">
+        <h3>Paramètres de Prévision</h3>
+        <div class="form-group">
+          <label>CA Initial (€)</label>
+          <input type="number" formControlName="montantRevenu" placeholder="Chiffre d'affaires initial">
+        </div>
+        <div class="form-group">
+          <label>Croissance CA (%)</label>
+          <input type="number" formControlName="croissanceRevenu" placeholder="Taux de croissance">
+        </div>
+        <div class="form-group">
+          <label>Charges Initiales (€)</label>
+          <input type="number" formControlName="montantCharge" placeholder="Charges initiales">
+        </div>
+        <div class="form-group">
+          <label>Évolution Charges (%)</label>
+          <input type="number" formControlName="croissanceCharge" placeholder="Taux d'évolution">
+        </div>
+      </div>
+    </div>
+
+    <div class="forecast-main">
+      <!-- Graphique d'Évolution -->
+      <div class="chart-container">
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="combinedChartOptions"
+          style="width: 100%; height: 400px; display: block;">
+        </highcharts-chart>
+      </div>
+
+      <!-- Tableau Détaillé -->
+      <div class="details-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Période</th>
+              <th>CA</th>
+              <th>Charges</th>
+              <th>Résultat</th>
+              <th>Marge (%)</th>
+              <th>Trésorerie</th>
+              <th>BFR</th>
+              <th>Évolution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let detail of forecastDetails; let i = index">
+              <td>{{detail.period}}</td>
+              <td>{{detail.revenue | number:'1.0-0'}} €</td>
+              <td>{{detail.expense | number:'1.0-0'}} €</td>
+              <td [class]="detail.result >= 0 ? 'positive' : 'negative'">
+                {{detail.result | number:'1.0-0'}} €
+              </td>
+              <td [class]="detail.margin >= 0 ? 'positive' : 'negative'">
+                {{detail.margin | number:'1.1-1'}}%
+              </td>
+              <td [class]="detail.cashFlow >= 0 ? 'positive' : 'negative'">
+                {{detail.cashFlow | number:'1.0-0'}} €
+              </td>
+              <td>{{detail.workingCapital | number:'1.0-0'}} €</td>
+              <td [class]="detail.evolution >= 0 ? 'positive' : 'negative'">
+                <i class="fas" [class.fa-arrow-up]="detail.evolution >= 0" [class.fa-arrow-down]="detail.evolution < 0"></i>
+                {{detail.evolution | number:'1.1-1'}}%
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

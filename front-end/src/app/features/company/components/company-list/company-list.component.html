@@ -1,0 +1,49 @@
+<div class="company-list">
+  <div class="header">
+    <h2>Liste des Sociétés</h2>
+    <div class="header-actions">
+      <button class="btn-outline" *ngIf="selectedCompany$ | async" (click)="clearSelection()">
+        <i class="bi bi-x-circle"></i>
+        Désélectionner
+      </button>
+      <button class="btn-add" (click)="openCreateForm()">
+        <i class="bi bi-plus-circle"></i>
+        Ajouter une société
+      </button>
+    </div>
+  </div>
+
+  <ng-container *ngIf="loading$ | async">
+    <div class="loading-spinner">
+      <i class="bi bi-arrow-repeat spin"></i>
+      Chargement...
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="error$ | async as error">
+    <div class="error-message">
+      {{ error }}
+    </div>
+  </ng-container>
+
+  <div class="card-container">
+    <ng-container *ngIf="companies$ | async as companies">
+      <app-company-card 
+        *ngFor="let company of companies" 
+        [company]="company"
+        [isSelected]="(selectedCompany$ | async)?.id === company.id"
+        (select)="onSelect(company)"
+        (edit)="editCompany(company)"
+        (delete)="onDeleteClick(company)">
+      </app-company-card>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="showDeleteDialog">
+    <app-company-delete-dialog
+      [companyName]="companyToDelete?.name || ''"
+      (confirm)="onConfirmDelete()"
+      (cancel)="closeDeleteDialog()">
+    </app-company-delete-dialog>
+  </ng-container>
+</div>

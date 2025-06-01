@@ -1,0 +1,285 @@
+.dashboard-container {
+  padding: 1.5rem;
+
+  .header {
+    h1 {
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+
+  // Ajustements pour les cartes dans la grille Bootstrap
+  .row {
+    // Ajouter un peu d'espace entre les lignes
+    & + .row {
+      margin-top: 1.5rem;
+    }
+
+    // Ajuster l'espacement des colonnes sur mobile
+    [class*="col-"] {
+      margin-bottom: 1.5rem;
+
+      @media (min-width: 768px) {
+        margin-bottom: 0;
+      }
+
+      // S'assurer que les cartes prennent toute la hauteur
+      app-stats-card {
+        display: block;
+        height: 100%;
+      }
+    }
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+
+    .stats-card {
+      background-color: var(--sidebar-bg);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+
+        i {
+          font-size: 1.5rem;
+          color: var(--primary);
+        }
+
+        h3 {
+          margin: 0;
+          font-size: 1.25rem;
+        }
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+
+        .stat-item {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          .label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+          }
+
+          .value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+
+            &.success { color: #22c55e; }
+            &.warning { color: #f59e0b; }
+            &.danger { color: #ef4444; }
+            &.info { color: #64748b; }
+
+            &.excellent { color: #22c55e; }
+            &.good { color: #10b981; }
+            &.average { color: #f59e0b; }
+            &.poor { color: #ef4444; }
+          }
+
+          .evolution {
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            width: fit-content;
+
+            &.success {
+              background: rgba(34, 197, 94, 0.1);
+              color: #22c55e;
+            }
+            &.warning {
+              background: rgba(245, 158, 11, 0.1);
+              color: #f59e0b;
+            }
+            &.danger {
+              background: rgba(239, 68, 68, 0.1);
+              color: #ef4444;
+            }
+          }
+        }
+      }
+
+      // Styles spécifiques pour les cartes
+      &.balance-sheet {
+        grid-column: span 2;
+        .stats {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      &.performance {
+        grid-column: span 2;
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      &.treasury,
+      &.receivables,
+      &.payables,
+      &.debts,
+      &.ratios {
+        .stats {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      &.journals {
+        .stats {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      // Couleurs spécifiques pour les en-têtes
+      &.balance-sheet .card-header i { color: #3b82f6; }
+      &.performance .card-header i { color: #10b981; }
+      &.treasury .card-header i { color: #22c55e; }
+      &.receivables .card-header i { color: #0ea5e9; }
+      &.payables .card-header i { color: #8b5cf6; }
+      &.debts .card-header i { color: #ef4444; }
+      &.ratios .card-header i { color: #f59e0b; }
+      &.journals .card-header i { color: #64748b; }
+
+      // Styles pour les graphiques
+      &.monthly-charts,
+      &.quarterly-charts {
+        grid-column: span 2;
+
+        .chart-container {
+          height: 300px;
+          margin-top: 1rem;
+        }
+      }
+
+      &.assets-distribution,
+      &.debt-distribution,
+      &.receivables-aging,
+      &.payables-aging {
+        .chart-container {
+          height: 250px;
+          margin-top: 1rem;
+        }
+      }
+
+      .chart-container {
+        position: relative;
+        width: 100%;
+
+        .chart-wrapper {
+          position: relative;
+          height: 100%;
+          width: 100%;
+
+          canvas {
+            width: 100% !important;
+            height: 100% !important;
+          }
+        }
+      }
+
+      // Légendes des graphiques
+      .chart-legend {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+
+        .legend-item {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.875rem;
+          color: var(--text-secondary);
+
+          .color-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+          }
+        }
+      }
+    }
+  }
+
+  // Styles pour les comptes bancaires
+  .bank-accounts {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--surface-border);
+
+    .bank-account {
+      margin-bottom: 1rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      app-stats-card {
+        background-color: var(--surface-hover);
+        border-radius: 8px;
+        transition: transform 0.2s ease-in-out;
+
+        &:hover {
+          transform: translateX(4px);
+        }
+      }
+    }
+  }
+}
+
+.dashboard {
+  padding: 2rem;
+
+  .page-title {
+    margin-bottom: 2rem;
+    
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+  }
+
+  .container-fluid {
+    .row {
+      margin: 0 -1rem;
+      
+      [class*="col-"] {
+        padding: 0 1rem;
+      }
+    }
+  }
+}
+
+
+/* bank-dashboard.component.css */
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.card-title {
+  font-size: 1.2rem;
+  color: #007bff;
+}

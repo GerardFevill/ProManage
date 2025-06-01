@@ -1,0 +1,105 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <div>
+      <h5 class="mb-0">Rapports comptables</h5>
+      <small>Génération et consultation des rapports</small>
+    </div>
+    <div class="d-flex gap-2">
+      <select class="form-select form-select-sm" [(ngModel)]="selectedPeriod">
+        <option *ngFor="let period of periods" [value]="period.id">{{ period.name }}</option>
+      </select>
+      <button class="btn btn-sm btn-primary">
+        <i class="bi bi-plus-circle me-1"></i> Nouveau rapport
+      </button>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <!-- Filtres -->
+    <div class="filters mb-3">
+      <div class="btn-group">
+        <button class="btn btn-sm" [class.btn-primary]="activeFilter === 'all'" (click)="setFilter('all')">
+          Tous
+        </button>
+        <button class="btn btn-sm" [class.btn-primary]="activeFilter === 'financial'" (click)="setFilter('financial')">
+          Financiers
+        </button>
+        <button class="btn btn-sm" [class.btn-primary]="activeFilter === 'tax'" (click)="setFilter('tax')">
+          Fiscaux
+        </button>
+        <button class="btn btn-sm" [class.btn-primary]="activeFilter === 'management'" (click)="setFilter('management')">
+          Gestion
+        </button>
+        <button class="btn btn-sm" [class.btn-primary]="activeFilter === 'favorites'" (click)="setFilter('favorites')">
+          Favoris
+        </button>
+      </div>
+    </div>
+
+    <!-- Liste des rapports -->
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nom du rapport</th>
+            <th>Type</th>
+            <th>Dernière génération</th>
+            <th>Fréquence</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of getFilteredReports()">
+            <td>
+              <div class="d-flex align-items-center">
+                <button class="btn btn-sm btn-link p-0 me-2" (click)="toggleFavorite(report)">
+                  <i class="bi" [ngClass]="report.favorite ? 'bi-star-fill text-warning' : 'bi-star text-secondary'"></i>
+                </button>
+                {{ report.name }}
+              </div>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="getTypeClass(report.type)">
+                {{ getTypeLabel(report.type) }}
+              </span>
+            </td>
+            <td>{{ formatDate(report.lastGenerated) }}</td>
+            <td>{{ report.frequency }}</td>
+            <td>
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-primary" (click)="generateReport(report)">
+                  <i class="bi bi-file-earmark-text"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary">
+                  <i class="bi bi-download"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-primary">
+                  <i class="bi bi-envelope"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-info-circle text-primary me-2"></i>
+          <small>Les rapports sont générés au format PDF par défaut.</small>
+        </div>
+      </div>
+      <div class="col-md-6 text-end">
+        <button class="btn btn-sm btn-outline-primary me-2">
+          <i class="bi bi-gear me-1"></i> Paramètres
+        </button>
+        <button class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-clock-history me-1"></i> Historique
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

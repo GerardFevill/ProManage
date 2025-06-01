@@ -1,0 +1,87 @@
+<div class="account-container">
+  <div class="account-list">
+    <div class="list-header">
+      <h2>Liste des comptes</h2>
+      <button class="btn-add" [routerLink]="['new']">
+        <i class="bi bi-plus"></i>
+        Nouveau compte
+      </button>
+    </div>
+
+    <ng-container *ngIf="!(loading$ | async); else loading">
+      <div class="table-container" *ngIf="accounts$ | async as accounts">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Nom</th>
+              <th>Type</th>
+              <th>Classe PCG</th>
+              <th class="center">Auxiliaire</th>
+              <th class="center">Actif</th>
+              <th class="actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let account of accounts">
+              <td class="account-code">{{ account.code }}</td>
+              <td>
+                <div class="account-name">{{ account.name }}</div>
+                <div class="account-description" *ngIf="account.description">
+                  {{ account.description }}
+                </div>
+              </td>
+              <td>{{ getTypeName(account.type) }}</td>
+              <td>{{ getClassePCGName(account.classePcg) }}</td>
+              <td class="center">
+                <i class="bi" [class.bi-check-lg]="account.isAuxiliaire" [class.bi-x-lg]="!account.isAuxiliaire"></i>
+              </td>
+              <td class="center">
+                <i class="bi" [class.bi-check-lg]="account.isActive" [class.bi-x-lg]="!account.isActive"></i>
+              </td>
+              <td class="actions">
+                <button 
+                  class="btn-icon" 
+                  [routerLink]="[account.id, 'edit']"
+                  title="Modifier"
+                >
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button 
+                  class="btn-icon" 
+                  (click)="copyAccount(account)"
+                  title="Copier"
+                >
+                  <i class="bi bi-files"></i>
+                </button>
+                <button 
+                  class="btn-icon delete" 
+                  (click)="confirmDelete(account)"
+                  title="Supprimer"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <ng-template #loading>
+      <div class="loading">
+        Chargement des comptes...
+      </div>
+    </ng-template>
+  </div>
+
+  <router-outlet></router-outlet>
+</div>
+
+<app-account-delete-dialog
+  *ngIf="showDeleteDialog && selectedAccount"
+  [accountName]="selectedAccount.name"
+  [accountCode]="selectedAccount.code"
+  (confirm)="onConfirmDelete()"
+  (cancel)="hideDeleteDialog()"
+></app-account-delete-dialog>

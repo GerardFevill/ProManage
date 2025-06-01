@@ -1,0 +1,13 @@
+<div class="fiscal-year-card">
+  <div class="card-content">
+    <div class="main-info">
+      <h4>{{ fiscalYear.name }}</h4>
+      <span class="status" [class]="getStatusClass(fiscalYear.status)">
+        {{ getStatusLabel(fiscalYear.status) }}
+      </span>
+    </div>
+    <div class="dates">
+      {{ formatDate(fiscalYear.startDate) }} - {{ formatDate(fiscalYear.endDate) }}
+    </div>
+  </div>
+</div>

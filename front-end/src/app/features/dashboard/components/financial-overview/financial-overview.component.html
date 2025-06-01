@@ -1,0 +1,114 @@
+<div class="financial-overview">
+  <!-- Navigation -->
+  <ul class="nav nav-pills mb-4">
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'depenses'" (click)="setActiveTab('depenses')">Dépenses</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'revenus'" (click)="setActiveTab('revenus')">Revenus</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'tresorerie'" (click)="setActiveTab('tresorerie')">Trésorerie</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled">Budget</a>
+    </li>
+  </ul>
+
+  <!-- Contenu principal -->
+  <div [ngSwitch]="activeTab" class="content-wrapper">
+    <!-- Vue Dépenses -->
+    <div *ngSwitchCase="'depenses'" class="tab-content">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Dépensé · Cette année</h2>
+        <button class="btn btn-icon btn-dark rounded-circle">
+          <i class="bi bi-arrow-clockwise"></i>
+        </button>
+      </div>
+      
+      <h3 class="amount mb-4">{{ formatCurrency(totalDepenses) }}</h3>
+      
+      <div class="chart-container mb-4">
+        <canvas #depensesChart></canvas>
+      </div>
+
+      <div class="period-selector mb-4">
+        <button class="btn" [class.active]="selectedPeriod === '1s'" (click)="setPeriod('1s')">1s</button>
+        <button class="btn" [class.active]="selectedPeriod === '1m'" (click)="setPeriod('1m')">1m</button>
+        <button class="btn" [class.active]="selectedPeriod === '6m'" (click)="setPeriod('6m')">6m</button>
+        <button class="btn" [class.active]="selectedPeriod === '1a'" (click)="setPeriod('1a')">1a</button>
+        <button class="btn">...</button>
+      </div>
+
+      <div class="categories">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="mb-0">Par catégorie</h4>
+          <a href="#" class="text-primary">Gérer</a>
+        </div>
+        
+        <div class="category-list">
+          <div *ngFor="let category of depensesCategories" class="category-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="category-info">
+                <i [class]="'bi ' + category.icon"></i>
+                <span class="category-name">{{ category.name }}</span>
+                <small class="text-muted">{{ category.transactions }} transactions</small>
+              </div>
+              <div class="category-amount text-end">
+                <div>{{ formatCurrency(category.amount) }}</div>
+                <small class="text-muted">{{ category.percentage }}%</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vue Revenus -->
+    <div *ngSwitchCase="'revenus'" class="tab-content">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Fonds reçus · Cette année</h2>
+        <button class="btn btn-icon btn-dark rounded-circle">
+          <i class="bi bi-arrow-clockwise"></i>
+        </button>
+      </div>
+      
+      <h3 class="amount mb-4">{{ formatCurrency(totalRevenus) }}</h3>
+      
+      <div class="chart-container mb-4">
+        <canvas #revenusChart></canvas>
+      </div>
+
+      <div class="period-selector mb-4">
+        <button class="btn" [class.active]="selectedPeriod === '1s'" (click)="setPeriod('1s')">1s</button>
+        <button class="btn" [class.active]="selectedPeriod === '1m'" (click)="setPeriod('1m')">1m</button>
+        <button class="btn" [class.active]="selectedPeriod === '6m'" (click)="setPeriod('6m')">6m</button>
+        <button class="btn" [class.active]="selectedPeriod === '1a'" (click)="setPeriod('1a')">1a</button>
+        <button class="btn">...</button>
+      </div>
+
+      <div class="categories">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="mb-0">Par catégorie</h4>
+          <a href="#" class="text-primary">Gérer</a>
+        </div>
+        
+        <div class="category-list">
+          <div *ngFor="let category of revenusCategories" class="category-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="category-info">
+                <i [class]="'bi ' + category.icon"></i>
+                <span class="category-name">{{ category.name }}</span>
+                <small class="text-muted">{{ category.transactions }} transactions</small>
+              </div>
+              <div class="category-amount text-end">
+                <div>{{ formatCurrency(category.amount) }}</div>
+                <small class="text-muted">{{ category.percentage }}%</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

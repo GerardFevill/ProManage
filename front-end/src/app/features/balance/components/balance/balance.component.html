@@ -1,0 +1,73 @@
+<div class="balance-container">
+  <div class="filters" [formGroup]="filterForm">
+    <div class="form-group">
+      <label for="startDate">Date de début</label>
+      <input 
+        type="date" 
+        id="startDate"
+        formControlName="startDate"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="endDate">Date de fin</label>
+      <input 
+        type="date" 
+        id="endDate"
+        formControlName="endDate"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="accountId">Compte</label>
+      <input 
+        id="accountId"
+        formControlName="accountId"
+        placeholder="Numéro de compte"
+      >
+    </div>
+  </div>
+
+  <div class="balance-table">
+    <table>
+      <thead>
+        <tr>
+          <th>N° Compte</th>
+          <th>Intitulé</th>
+          <th>Type</th>
+          <th>Total Débit</th>
+          <th>Total Crédit</th>
+          <th>Solde</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entry of balanceEntries">
+          <td>{{ entry.account_code }}</td>
+          <td>{{ entry.account_name }}</td>
+          <td>{{ entry.type_id }}</td>
+          <td class="amount-cell debit">{{ entry.total_debit | amount }}</td>
+          <td class="amount-cell credit">{{ entry.total_credit | amount }}</td>
+          <td class="balance-cell"
+              [class.positive]="entry.balance > 0"
+              [class.negative]="entry.balance < 0"
+              [class.zero]="entry.balance === 0">
+            {{ entry.balance | balance }}
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">Total</td>
+          <td class="amount-cell debit">{{ totals.debit | amount }}</td>
+          <td class="amount-cell credit">{{ totals.credit | amount }}</td>
+          <td class="balance-cell"
+              [class.positive]="totals.balance > 0"
+              [class.negative]="totals.balance < 0"
+              [class.zero]="totals.balance === 0">
+            {{ totals.balance | balance }}
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

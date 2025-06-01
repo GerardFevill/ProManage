@@ -1,0 +1,42 @@
+<div class="sidebar" [class.collapsed]="!isExpanded">
+  <div class="brand">
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <i class="bi" [class.bi-chevron-left]="isExpanded" [class.bi-chevron-right]="!isExpanded"></i>
+    </button>
+    <span class="brand-text" *ngIf="isExpanded">ProManage</span>
+  </div>
+
+  <nav class="nav-links">
+      <div class="menu">
+        <ng-container *ngFor="let item of menuItems$ | async">
+          <div class="menu-item" [class.has-children]="item.children">
+            <a [routerLink]="item.link" 
+               routerLinkActive="active" 
+               [routerLinkActiveOptions]="{exact: true}"
+               *ngIf="!item.children">
+              <i [class]="item.icon"></i>
+              <span>{{ item.title }}</span>
+            </a>
+            
+            <div class="menu-item-header" *ngIf="item.children" (click)="toggleMenuItem(item)">
+              <div class="menu-item-title">
+                <i [class]="item.icon"></i>
+                <span>{{ item.title }}</span>
+              </div>
+              <i class="bi" [class.bi-chevron-down]="!item.active" [class.bi-chevron-up]="item.active"></i>
+            </div>
+
+            <div class="submenu" *ngIf="item.children" [class.expanded]="item.active">
+              <a *ngFor="let child of item.children" 
+                 [routerLink]="child.link" 
+                 routerLinkActive="active"
+                 class="submenu-item">
+                <i [class]="child.icon"></i>
+                <span>{{ child.title }}</span>
+              </a>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+  </nav>
+</div>

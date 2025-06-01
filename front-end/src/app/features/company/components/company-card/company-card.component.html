@@ -1,0 +1,130 @@
+<div class="company-card" [class.selected]="isSelected" (click)="onSelect()">
+  <!-- Badge de statut en haut à droite -->
+  <div class="status-badge" *ngIf="company.status">
+    {{ company.status === 'active' ? 'Actif' : 'Inactif' }}
+  </div>
+
+  <div class="card-header">
+    <div class="company-info">
+      <div class="company-avatar">
+        {{ company.name.charAt(0).toUpperCase() }}
+      </div>
+      <h3>{{company.name}}</h3>
+    </div>
+    <div class="actions">
+      <button class="btn-edit" (click)="onEdit($event)" title="Modifier">
+        <i class="bi bi-pencil"></i>
+      </button>
+      <button class="btn-delete" (click)="onDelete($event)" title="Supprimer">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div class="card-body">
+    <!-- Description avec icône -->
+    <div class="info-group" *ngIf="company.description">
+      <div class="info-label">
+        <i class="bi bi-info-circle"></i>
+        <label>Description</label>
+      </div>
+      <p>{{ company.description }}</p>
+    </div>
+
+    <!-- Informations de contact avec icônes -->
+    <div class="info-row">
+      <div class="info-group" *ngIf="company.email">
+        <div class="info-label">
+          <i class="bi bi-envelope"></i>
+          <label>Email</label>
+        </div>
+        <p>
+          <a [href]="'mailto:' + company.email">{{ company.email }}</a>
+        </p>
+      </div>
+      <div class="info-group" *ngIf="company.phone">
+        <div class="info-label">
+          <i class="bi bi-telephone"></i>
+          <label>Téléphone</label>
+        </div>
+        <p class="phone-number">
+          <a [href]="'tel:' + company.phone">{{ company.phone | phoneFormat }}</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Adresse avec icône -->
+    <div class="info-group" *ngIf="company.address">
+      <div class="info-label">
+        <i class="bi bi-geo-alt"></i>
+        <label>Adresse</label>
+      </div>
+      <p>{{ company.address }}</p>
+    </div>
+
+    <!-- Informations légales avec icônes -->
+    <div class="info-row">
+      <div class="info-group" *ngIf="company.siret">
+        <div class="info-label">
+          <i class="bi bi-card-text"></i>
+          <label>SIRET</label>
+        </div>
+        <p>{{ company.siret }}</p>
+      </div>
+      <div class="info-group" *ngIf="company.legalForm">
+        <div class="info-label">
+          <i class="bi bi-building"></i>
+          <label>Forme juridique</label>
+        </div>
+        <p>{{ company.legalForm }}</p>
+      </div>
+    </div>
+
+    <!-- Numéro TVA avec icône -->
+    <div class="info-group" *ngIf="company.vatNumber">
+      <div class="info-label">
+        <i class="bi bi-receipt"></i>
+        <label>N° TVA</label>
+      </div>
+      <p>{{ company.vatNumber }}</p>
+    </div>
+
+    <!-- Années fiscales -->
+    <div class="fiscal-years-section" *ngIf="company.fiscalYears && company.fiscalYears.length > 0">
+      <div class="section-header">
+        <i class="bi bi-calendar-range"></i>
+        <h4>Années fiscales</h4>
+      </div>
+      <app-fiscal-year-list 
+        [fiscalYears]="company.fiscalYears" 
+        [compactMode]="true">
+      </app-fiscal-year-list>
+    </div>
+    
+    <!-- Indicateurs financiers -->
+    <div class="metrics-section" *ngIf="company.metrics">
+      <div class="section-header">
+        <i class="bi bi-graph-up"></i>
+        <h4>Indicateurs clés</h4>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-item" *ngIf="company.metrics?.revenue">
+          <div class="metric-value">{{ company.metrics.revenue | currency:'EUR' }}</div>
+          <div class="metric-label">Chiffre d'affaires</div>
+        </div>
+        <div class="metric-item" *ngIf="company.metrics?.profit">
+          <div class="metric-value">{{ company.metrics.profit | currency:'EUR' }}</div>
+          <div class="metric-label">Résultat net</div>
+        </div>
+        <div class="metric-item" *ngIf="company.metrics?.employees">
+          <div class="metric-value">{{ company.metrics.employees }}</div>
+          <div class="metric-label">Employés</div>
+        </div>
+        <div class="metric-item" *ngIf="company.metrics?.projects">
+          <div class="metric-value">{{ company.metrics.projects }}</div>
+          <div class="metric-label">Projets actifs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

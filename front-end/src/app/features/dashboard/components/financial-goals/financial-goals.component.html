@@ -1,0 +1,54 @@
+<div class="financial-goals">
+  <div class="card goals-card">
+    <div class="card-header">
+      <h4>Objectifs Financiers</h4>
+      <div class="period-selector">
+        <button class="btn btn-sm active">Annuel</button>
+        <button class="btn btn-sm">Trimestriel</button>
+        <button class="btn btn-sm">Mensuel</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="goals-grid">
+        <div class="goal-item" *ngFor="let goal of financialGoals">
+          <div class="goal-icon" [style.background-color]="goal.color + '20'">
+            <i class="bi" [ngClass]="goal.icon" [style.color]="goal.color"></i>
+          </div>
+          <div class="goal-details">
+            <div class="goal-name">{{ goal.name }}</div>
+            <div class="goal-progress">
+              <div class="progress">
+                <div class="progress-bar" [style.width.%]="calculateProgress(goal.current, goal.target)" 
+                     [style.background-color]="goal.color"></div>
+              </div>
+              <div class="progress-text">
+                <span>{{ formatValue(goal.current, goal.unit) }}</span>
+                <span class="goal-target">{{ formatValue(goal.target, goal.unit) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="kpi-section mt-4">
+        <h5>Indicateurs clés</h5>
+        <div class="kpi-table">
+          <div class="kpi-header">
+            <div class="kpi-name-header">Indicateur</div>
+            <div class="kpi-value-header">Actuel</div>
+            <div class="kpi-target-header">Objectif</div>
+            <div class="kpi-trend-header">Tendance</div>
+          </div>
+          <div class="kpi-row" *ngFor="let kpi of kpis">
+            <div class="kpi-name">{{ kpi.name }}</div>
+            <div class="kpi-value" [ngClass]="'status-' + kpi.status">{{ kpi.value }}</div>
+            <div class="kpi-target">{{ kpi.target }}</div>
+            <div class="kpi-trend" [ngClass]="getTrendClass(kpi.trend)">
+              <i class="bi" [ngClass]="getTrendIcon(kpi.trend)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

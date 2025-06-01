@@ -1,0 +1,60 @@
+<div class="treasury-view">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Trésorerie · Vue d'ensemble</h2>
+    <button class="btn btn-icon btn-dark rounded-circle">
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+  </div>
+  
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="treasury-balance">
+        <h4>Solde actuel</h4>
+        <h3 class="amount">{{ formatCurrency(treasuryBalance) }}</h3>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="accounts-summary">
+        <h4>Comptes bancaires</h4>
+        <div class="account-list">
+          <div *ngFor="let account of bankAccounts" class="account-item">
+            <div class="account-icon">
+              <i [class]="'bi ' + account.icon"></i>
+            </div>
+            <div class="account-details">
+              <div class="account-name">{{ account.name }}</div>
+              <div class="account-balance">{{ formatCurrency(account.balance) }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="chart-container mb-4">
+    <h4>Évolution et prévisions</h4>
+    <div class="chart-wrapper">
+      <canvas #treasuryChart></canvas>
+    </div>
+  </div>
+  
+  <div class="recent-transactions">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Transactions récentes</h4>
+      <a href="#" class="text-primary">Voir tout</a>
+    </div>
+    
+    <div class="transaction-list">
+      <div *ngFor="let transaction of recentTransactions" class="transaction-item">
+        <div class="transaction-date">{{ formatDate(transaction.date) }}</div>
+        <div class="transaction-details">
+          <div class="transaction-description">{{ transaction.description }}</div>
+          <div class="transaction-category">{{ transaction.category }}</div>
+        </div>
+        <div class="transaction-amount" [ngClass]="{'positive': transaction.amount > 0, 'negative': transaction.amount < 0}">
+          {{ formatCurrency(transaction.amount) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

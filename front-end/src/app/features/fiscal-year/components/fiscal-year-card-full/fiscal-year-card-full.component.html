@@ -1,0 +1,46 @@
+<div class="fiscal-year-card">
+  <div class="card-header"  (click)="selectFiscalYear()">
+    <h4>{{ fiscalYear.name }}</h4>
+    <div class="status-badge" [class]="getStatusClass(fiscalYear.status)">
+      {{ statusLabels[fiscalYear.status] }}
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="info-row">
+      <div class="info-group">
+        <label>Début</label>
+        <div class="value">{{ formatDate(fiscalYear.startDate) }}</div>
+      </div>
+      <div class="info-group">
+        <label>Fin</label>
+        <div class="value">{{ formatDate(fiscalYear.endDate) }}</div>
+      </div>
+    </div>
+
+    <div class="info-row" *ngIf="fiscalYear.notes">
+      <div class="info-group full-width">
+        <label>Notes</label>
+        <div class="value notes">{{ fiscalYear.notes }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-actions">
+    <a [routerLink]="['/companies', companyId, 'fiscal-years', fiscalYear.id, 'edit']" class="btn-edit">
+      <i class="bi bi-pencil"></i>
+      Modifier
+    </a>
+    <button class="btn-delete" (click)="showDeleteDialog()">
+      <i class="bi bi-trash"></i>
+      Supprimer
+    </button>
+  </div>
+</div>
+
+<app-fiscal-year-delete-dialog
+  *ngIf="showingDeleteDialog"
+  [fiscalYearName]="fiscalYear.name"
+  (confirm)="confirmDelete()"
+  (cancel)="cancelDelete()"
+></app-fiscal-year-delete-dialog>

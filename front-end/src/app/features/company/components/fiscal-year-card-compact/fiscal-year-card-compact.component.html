@@ -1,0 +1,21 @@
+<div class="fiscal-year-card-compact" >
+  <div class="card-content">
+    <div class="row">
+      <div class="col-12">
+        <div class="main-info">
+          <h4>{{ fiscalYear.name }}</h4>
+          <span class="status" [ngClass]="getStatusClass(fiscalYear.status)"(click)="onCardClick()">
+            <i class="bi bi-pencil" ></i>
+             {{ statusLabels[fiscalYear.status] }}
+          </span>
+        </div>
+      </div>
+      <div class="col-12" >
+        <i class="bi bi-eye" (click)="selectFiscalYear()"></i>
+        <div class="dates" *ngIf="fiscalYear?.startDate || fiscalYear?.endDate">
+          {{ formatDate(fiscalYear.startDate) }} - {{ formatDate(fiscalYear.endDate) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

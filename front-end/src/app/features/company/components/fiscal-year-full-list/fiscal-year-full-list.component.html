@@ -1,0 +1,43 @@
+<div class="fiscal-years-full">
+  @if (company) {
+    <div class="header">
+      <div class="header-left">
+        <a [routerLink]="['/companies', company.id]" class="btn-back">
+          <i class="bi bi-arrow-left"></i>
+          Retour à la société
+        </a>
+        <h2>Années Fiscales - {{ company.name }}</h2>
+      </div>
+      <a [routerLink]="['new']" class="btn-add">
+        <i class="bi bi-plus"></i>
+        Nouvelle année fiscale
+      </a>
+    </div>
+
+    <div class="filters">
+      <div class="search">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Rechercher une année fiscale...">
+      </div>
+      <div class="status-filters">
+        <button class="filter-btn active">Toutes</button>
+        <button class="filter-btn">Actives</button>
+        <button class="filter-btn">En attente</button>
+        <button class="filter-btn">Clôturées</button>
+      </div>
+    </div>
+
+    <div class="fiscal-year-grid">
+      @for (fiscalYear of company.fiscalYears; track fiscalYear.id) {
+        <app-fiscal-year-card-compact
+          [fiscalYear]="fiscalYear"
+          [companyId]="company.id"
+        ></app-fiscal-year-card-compact>
+      } @empty {
+        <div class="no-data">
+          Aucune année fiscale trouvée.
+        </div>
+      }
+    </div>
+  }
+</div>

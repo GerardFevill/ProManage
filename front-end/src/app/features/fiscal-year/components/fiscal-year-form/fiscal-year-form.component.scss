@@ -1,0 +1,123 @@
+// Styles for fiscal year form component
+:host {
+  display: block;
+}
+
+.fiscal-year-form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+  background-color: var(--sidebar-bg);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: calc(100vh - 2rem);
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+
+    h3 {
+      color: var(--text-primary);
+      margin: 0;
+    }
+  }
+
+  form {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+
+      label {
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      input, select, textarea {
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+
+        &:focus {
+          outline: none;
+          border-color: var(--text-primary);
+          box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        &.is-invalid {
+          border-color: var(--danger);
+        }
+      }
+
+      textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .invalid-feedback {
+        color: var(--danger);
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+
+      button {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &.btn-secondary {
+          background-color: transparent;
+          border: 1px solid var(--border-color);
+          color: var(--text-primary);
+
+          &:hover {
+            background-color: var(--bg-hover);
+          }
+        }
+
+        &.btn-primary {
+          background-color: var(--primary);
+          border: none;
+          color: white;
+
+          &:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+          }
+
+          &:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+          }
+        }
+
+        .spinner-border {
+          width: 1rem;
+          height: 1rem;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+}

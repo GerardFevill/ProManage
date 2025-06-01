@@ -1,0 +1,204 @@
+// Variables
+$border-radius: 0.75rem;
+$transition-speed: 0.2s;
+$spacing-unit: 1rem;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+}
+
+@mixin button-base {
+  border: none;
+  cursor: pointer;
+  transition: all $transition-speed ease;
+}
+
+.account-container {
+  display: flex;
+  gap: 2rem;
+  padding: $spacing-unit;
+  height: calc(100vh - 2rem);
+  justify-content: center;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+  }
+
+  app-account-form {
+    flex: 1;
+    max-width: 800px;
+    
+    @media (max-width: 768px) {
+      max-width: 100%;
+    }
+  }
+}
+
+.account-list {
+  flex: 1;
+  max-width: 1200px;
+  background-color: var(--sidebar-bg);
+  border-radius: $border-radius;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: $spacing-unit;
+  display: flex;
+  flex-direction: column;
+  
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+
+  .list-header {
+    margin-bottom: $spacing-unit;
+    flex-shrink: 0;
+    @include flex-center;
+    justify-content: space-between;
+    
+    h2 {
+      color: var(--text-primary);
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      @include flex-center;
+      @include button-base;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: $border-radius;
+      background-color: var(--primary-color, #4299e1);
+      color: white;
+      font-weight: 500;
+      
+      &:hover {
+        background-color: var(--primary-color-dark, #3182ce);
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      i {
+        font-size: 1.25rem;
+      }
+    }
+  }
+
+  .table-container {
+    flex: 1;
+    overflow: auto;
+    border-radius: $border-radius;
+    background-color: var(--bg-primary);
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      
+      th, td {
+        padding: 1rem 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color, #e2e8f0);
+        
+        &:first-child {
+          padding-left: $spacing-unit;
+        }
+        
+        &:last-child {
+          padding-right: $spacing-unit;
+        }
+      }
+
+      th {
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+        font-weight: 600;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        
+        &:first-child {
+          border-top-left-radius: $border-radius;
+        }
+        
+        &:last-child {
+          border-top-right-radius: $border-radius;
+        }
+      }
+
+      tr {
+        &:hover {
+          background-color: var(--hover-bg, rgba(0, 0, 0, 0.02));
+        }
+      }
+
+      td {
+        color: var(--text-primary);
+
+        &.center {
+          text-align: center;
+        }
+
+        &.actions {
+          text-align: right;
+          white-space: nowrap;
+        }
+      }
+
+      .btn-icon {
+        @include button-base;
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        color: var(--text-secondary);
+        background-color: var(--hover-bg, rgba(0, 0, 0, 0.05));
+        
+        &:hover {
+          background-color: var(--hover-bg, rgba(0, 0, 0, 0.05));
+          color: var(--text-primary);
+        }
+
+        &.delete:hover {
+          color: var(--danger-color, #e53e3e);
+          background-color: var(--danger-bg, rgba(229, 62, 62, 0.1));
+        }
+
+        i {
+          font-size: 1.125rem;
+        }
+      }
+    }
+  }
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem;
+    z-index: 1;
+    
+    @media (max-width: 768px) {
+      margin: 1rem;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+<div class="delete-dialog">
+  <div class="dialog-content">
+    <div class="dialog-header">
+      <i class="bi bi-exclamation-triangle"></i>
+      <h3>Confirmer la suppression</h3>
+    </div>
+    
+    <div class="dialog-body">
+      <p>Êtes-vous sûr de vouloir supprimer la transaction suivante ?</p>
+      <div class="transaction-details">
+        <p><strong>Date :</strong> {{ formatDate(transactionDate) }}</p>
+        <p><strong>Référence :</strong> {{ transactionReference || 'Sans référence' }}</p>
+        <p><strong>Montant :</strong> {{ formatAmount(transactionAmount) }}</p>
+      </div>
+      <p class="warning">Cette action est irréversible.</p>
+    </div>
+
+    <div class="dialog-actions">
+      <button class="btn-cancel" (click)="onCancel()">
+        <i class="bi bi-x"></i>
+        Annuler
+      </button>
+      <button class="btn-delete" (click)="onConfirm()">
+        <i class="bi bi-trash"></i>
+        Supprimer
+      </button>
+    </div>
+  </div>
+</div>

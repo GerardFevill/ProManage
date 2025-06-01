@@ -1,0 +1,104 @@
+<div class="dark-table-container">
+  <!-- Barre de recherche -->
+  <div class="search-container mb-3" *ngIf="showSearch">
+    <div class="input-group input-group-sm">
+      <span class="input-group-text" id="search-addon"><i class="bi bi-search"></i></span>
+      <input 
+        type="text" 
+        class="form-control" 
+        [(ngModel)]="searchTerm" 
+        (input)="onSearchChange()" 
+        [placeholder]="searchPlaceholder" 
+        aria-label="Rechercher" 
+        aria-describedby="search-addon">
+    </div>
+  </div>
+
+  <!-- Indicateur de chargement -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner">
+      <i class="bi bi-arrow-clockwise"></i>
+    </div>
+    <div class="loading-text">Chargement...</div>
+  </div>
+
+  <!-- Tableau de données -->
+  <div class="table-responsive" *ngIf="!loading">
+    <table class="table table-hover" [class.table-striped]="striped">
+      <thead>
+        <tr>
+          <th *ngFor="let column of columns" 
+              [ngClass]="getColumnAlignment(column)"
+              [style.width]="column.width || 'auto'"
+              [class.sortable]="column.sortable && sortable"
+              (click)="onSortClick(column)">
+            <div class="d-flex align-items-center justify-content-between">
+              <span>{{ column.label }}</span>
+              <i *ngIf="column.sortable && sortable" class="bi sort-icon" [ngClass]="getSortIcon(column)"></i>
+            </div>
+          </th>
+          <th *ngIf="showActions" class="actions-column">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="data && data.length > 0; else emptyState">
+          <tr *ngFor="let item of data" 
+              [ngClass]="{'dark-row': darkRows, 'table-dark': darkRows}"
+              [class]="getRowClasses(item)"
+              (click)="rowClick.emit(item)">
+            <td *ngFor="let column of columns" [ngClass]="getColumnAlignment(column)">
+              <!-- Utiliser le template personnalisé s'il existe -->
+              <ng-container *ngIf="column.cellTemplate; else defaultCellContent">
+                <ng-container *ngTemplateOutlet="column.cellTemplate; context: { $implicit: item }"></ng-container>
+              </ng-container>
+              
+              <!-- Contenu par défaut si pas de template personnalisé -->
+              <ng-template #defaultCellContent>
+                <ng-container *ngIf="column.pipe">
+                  {{ applyPipe(item[column.key], column.pipe, column.pipeArgs) }}
+                </ng-container>
+                <ng-container *ngIf="!column.pipe">
+                  {{ item[column.key] }}
+                </ng-container>
+              </ng-template>
+            </td>
+            
+            <!-- Colonne d'actions -->
+            <td *ngIf="showActions" class="actions-column text-end">
+              <!-- Template personnalisé pour les actions -->
+              <ng-container *ngIf="actionsTemplate; else defaultActions">
+                <ng-container *ngTemplateOutlet="actionsTemplate; context: { $implicit: item }"></ng-container>
+              </ng-container>
+              
+              <!-- Template par défaut pour les actions -->
+              <ng-template #defaultActions>
+                <div class="btn-group">
+                  <ng-container *ngFor="let actionItem of actions">
+                    <button *ngIf="isActionVisible(actionItem, item)"
+                            type="button"
+                            class="btn btn-sm" 
+                            [ngClass]="actionItem.btnClass || 'btn-outline-primary'"
+                            [title]="actionItem.tooltip || actionItem.label"
+                            (click)="$event.stopPropagation(); actionItem.action(item)">
+                      <i class="bi" [ngClass]="actionItem.icon"></i>
+                    </button>
+                  </ng-container>
+                </div>
+              </ng-template>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-template #emptyState>
+          <tr>
+            <td [attr.colspan]="showActions ? columns.length + 1 : columns.length" class="text-center py-4">
+              <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <p>{{ emptyMessage }}</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="fiscal-year-card">
+  <div class="card-header">
+    <h4>{{ fiscalYear.name }}</h4>
+    <span class="status" [class]="getStatusClass(fiscalYear.status)">
+      {{ fiscalYear.status }}
+    </span>
+  </div>
+  <div class="card-body">
+    <div class="dates">
+      <div class="date">
+        <label>Début :</label>
+        <span>{{ formatDate(fiscalYear.startDate) }}</span>
+      </div>
+      <div class="date">
+        <label>Fin :</label>
+        <span>{{ formatDate(fiscalYear.endDate) }}</span>
+      </div>
+    </div>
+    @if (fiscalYear.notes) {
+      <p class="notes">{{ fiscalYear.notes }}</p>
+    }
+  </div>
+  <div class="card-actions">
+    <a [routerLink]="['/companies', companyId, 'fiscal-years', fiscalYear.id]" class="btn-view">
+      <i class="bi bi-eye"></i>
+      Voir détails
+    </a>
+  </div>
+</div>

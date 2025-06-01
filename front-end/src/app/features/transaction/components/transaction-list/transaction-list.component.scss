@@ -1,0 +1,50 @@
+.transaction-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .transaction-list {
+    flex: 1;
+    padding: 1rem;
+
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      h2 {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem;
+    z-index: 1;
+  }
+}

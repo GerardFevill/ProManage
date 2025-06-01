@@ -1,0 +1,71 @@
+<div class="fiscal-year-list" [class.compact-mode]="compactMode">
+  <!-- En-tête standard (non affiché en mode compact) -->
+  <div class="header" *ngIf="!compactMode">
+    <div class="header-left">
+      <h3>Années Fiscales</h3>
+    </div>
+    <div>
+      <a [routerLink]="['new']" class="btn-add">
+        <i class="bi bi-plus-circle"></i>
+        Nouvelle
+      </a>
+    </div>
+  </div>
+
+  <ng-container *ngIf="loading$ | async">
+    <div class="loading">
+      <i class="bi bi-hourglass"></i>
+      Chargement...
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="error$ | async as error">
+    <div class="alert alert-danger">{{ error }}</div>
+  </ng-container>
+
+  <ng-container *ngIf="fiscalYears$ | async as fiscalYears">
+    <!-- Séparateur (non affiché en mode compact) -->
+    <hr *ngIf="!compactMode">
+    
+    <!-- Mode standard -->
+    <div class="fiscal-year-grid mt-3" *ngIf="!compactMode">
+      <div class="container-fluid p-0">
+        <div class="row g-4">
+          <ng-container *ngIf="fiscalYears.length > 0; else standardNoData">
+            <div class="col-12 col-md-6" *ngFor="let fiscalYear of fiscalYears; trackBy: trackById">
+              <app-fiscal-year-card-full
+                [fiscalYear]="fiscalYear"
+                [companyId]="companyId"
+                (delete)="onDelete(fiscalYear)"
+                [class.deleting]="(deleting$ | async)?.[fiscalYear.id!]"
+              ></app-fiscal-year-card-full>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <ng-template #standardNoData>
+        <div class="no-data">
+          Aucune année fiscale trouvée.
+        </div>
+      </ng-template>
+    </div>
+    
+    <!-- Mode compact -->
+    <div class="fiscal-years-compact" *ngIf="compactMode && fiscalYears.length > 0">
+      <div class="fiscal-year-item" *ngFor="let fiscalYear of fiscalYears; trackBy: trackById">
+        <div class="fiscal-year-name">
+          <span [class.active-badge]="fiscalYear.status === 'active'">{{ fiscalYear.name }}</span>
+        </div>
+        <div class="fiscal-year-dates">
+          <span>{{ fiscalYear.startDate | date:'dd/MM/yyyy' }} - {{ fiscalYear.endDate | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Message si pas de données en mode compact -->
+    <div class="no-data-compact" *ngIf="compactMode && fiscalYears.length === 0">
+      Aucune année fiscale disponible
+    </div>
+  </ng-container>
+</div>

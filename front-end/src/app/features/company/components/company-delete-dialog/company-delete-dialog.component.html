@@ -1,0 +1,24 @@
+<div class="delete-dialog">
+  <div class="dialog-content">
+    <div class="dialog-header">
+      <i class="bi bi-exclamation-triangle"></i>
+      <h3>Confirmer la suppression</h3>
+    </div>
+    
+    <div class="dialog-body">
+      <p>Êtes-vous sûr de vouloir supprimer la société "{{ companyName }}" ?</p>
+      <p class="warning">Cette action est irréversible.</p>
+    </div>
+
+    <div class="dialog-actions">
+      <button class="btn-cancel" (click)="onCancel()">
+        <i class="bi bi-x"></i>
+        Annuler
+      </button>
+      <button class="btn-delete" (click)="onConfirm()">
+        <i class="bi bi-trash"></i>
+        Supprimer
+      </button>
+    </div>
+  </div>
+</div>

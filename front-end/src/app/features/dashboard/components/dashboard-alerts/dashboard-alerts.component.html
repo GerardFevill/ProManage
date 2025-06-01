@@ -1,0 +1,43 @@
+<div class="dashboard-alerts">
+  <div class="card alerts-card">
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4>Alertes & Notifications</h4>
+        <span class="badge bg-danger" *ngIf="getUnreadCount() > 0">{{ getUnreadCount() }}</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="alerts-list" *ngIf="alerts.length > 0">
+        <div class="alert-item" *ngFor="let alert of alerts" 
+             [ngClass]="{'unread': !alert.read, 'read': alert.read}">
+          <div class="alert-icon" [ngClass]="getAlertClass(alert.type)">
+            <i class="bi" [ngClass]="alert.icon"></i>
+          </div>
+          <div class="alert-content">
+            <div class="alert-header">
+              <div class="alert-title">{{ alert.title }}</div>
+              <div class="alert-date">{{ formatDate(alert.date) }}</div>
+            </div>
+            <div class="alert-message">{{ alert.message }}</div>
+          </div>
+          <div class="alert-actions">
+            <button class="btn btn-sm btn-icon" (click)="markAsRead(alert)" *ngIf="!alert.read" 
+                    title="Marquer comme lu">
+              <i class="bi bi-check"></i>
+            </button>
+            <button class="btn btn-sm btn-icon" (click)="dismissAlert(alert.id)" title="Ignorer">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="no-alerts" *ngIf="alerts.length === 0">
+        <i class="bi bi-bell-slash"></i>
+        <p>Aucune alerte à afficher</p>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-sm btn-link w-100">Voir toutes les notifications</button>
+    </div>
+  </div>
+</div>

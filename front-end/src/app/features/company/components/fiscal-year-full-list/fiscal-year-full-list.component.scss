@@ -1,0 +1,147 @@
+.fiscal-years-full {
+  padding: 1.5rem;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: color 0.2s;
+
+        &:hover {
+          color: var(--text-primary);
+        }
+
+        i {
+          font-size: 1rem;
+        }
+      }
+
+      h2 {
+        margin: 0;
+        color: var(--text-primary);
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+    }
+
+    .btn-add {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: var(--accent-primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: var(--accent-hover);
+      }
+
+      i {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+
+    .search {
+      position: relative;
+      flex: 1;
+      max-width: 400px;
+
+      i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+        font-size: 1rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+        font-size: 0.875rem;
+
+        &::placeholder {
+          color: var(--text-secondary);
+        }
+
+        &:focus {
+          outline: none;
+          border-color: var(--accent-primary);
+        }
+      }
+    }
+
+    .status-filters {
+      display: flex;
+      gap: 0.5rem;
+
+      .filter-btn {
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          background-color: var(--bg-hover);
+        }
+
+        &.active {
+          background-color: var(--accent-primary);
+          border-color: var(--accent-primary);
+          color: white;
+        }
+      }
+    }
+  }
+
+  .fiscal-year-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .no-data {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+}

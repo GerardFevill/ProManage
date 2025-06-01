@@ -1,0 +1,43 @@
+<div class="resultat-container">
+  <div class="filters" [formGroup]="filterForm">
+    <div class="periode-n">
+      <h3>Période N</h3>
+      <div class="form-group">
+        <label for="dateDebut">Date de début</label>
+        <input type="date" id="dateDebut" formControlName="dateDebut">
+      </div>
+      <div class="form-group">
+        <label for="dateFin">Date de fin</label>
+        <input type="date" id="dateFin" formControlName="dateFin">
+      </div>
+    </div>
+    <div class="periode-n1">
+      <h3>Période N-1</h3>
+      <div class="form-group">
+        <label for="dateDebutN1">Date de début</label>
+        <input type="date" id="dateDebutN1" formControlName="dateDebutN1">
+      </div>
+      <div class="form-group">
+        <label for="dateFinN1">Date de fin</label>
+        <input type="date" id="dateFinN1" formControlName="dateFinN1">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <h2>Produits</h2>
+      <app-data-table [columns]="columns" [data]="produitsTableData" [loading]="loading"
+        [showActions]="false"></app-data-table>
+    </div>
+
+    <div class="col-6">
+      <h2>Charges</h2>
+      <app-data-table [columns]="columns" [data]="chargesTableData" [loading]="loading"
+        [showActions]="false"></app-data-table>
+    </div>
+    <div class="col-12">      <h2>Résultats</h2>
+      <app-data-table [columns]="columns" [data]="resultatsTableData" [loading]="loading"
+        [showActions]="false"></app-data-table></div>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+.fiscal-year-list {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+  }
+
+  .alert {
+    margin: 1rem 0;
+  }
+
+  .loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+
+    i {
+      font-size: 1rem;
+    }
+  }
+
+  .no-data {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem;
+    font-size: 0.875rem;
+  }
+  
+  // Styles pour le mode compact
+  &.compact-mode {
+    margin: 0;
+    padding: 0;
+    
+    .fiscal-years-compact {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+      
+      .fiscal-year-item {
+        background-color: var(--bg-secondary, #2a2a2a);
+        border-radius: 8px;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        
+        .fiscal-year-name {
+          font-weight: 600;
+          margin-bottom: 4px;
+          color: #ffffff;
+          
+          span {
+            display: inline-block;
+            
+            &.active-badge {
+              color: #4CAF50;
+              position: relative;
+              
+              &::after {
+                content: '•';
+                display: inline-block;
+                margin-left: 6px;
+                font-size: 1.2rem;
+                line-height: 0;
+                position: relative;
+                top: 2px;
+              }
+            }
+          }
+        }
+        
+        .fiscal-year-dates {
+          font-size: 0.85rem;
+          color: #aaaaaa;
+        }
+      }
+    }
+    
+    .no-data-compact {
+      text-align: center;
+      color: #aaaaaa;
+      padding: 10px;
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+  }
+}

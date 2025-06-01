@@ -1,0 +1,187 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <div>
+      <h5 class="mb-0">Suivi budgétaire</h5>
+      <small class="text-muted">Analyse des écarts budgétaires</small>
+    </div>
+    <div class="d-flex gap-2">
+      <select class="form-select form-select-sm" [(ngModel)]="selectedPeriod">
+        <option *ngFor="let period of periods" [value]="period.id">{{ period.name }}</option>
+      </select>
+      <div class="btn-group">
+        <button class="btn btn-sm" [class.btn-primary]="selectedView === 'expenses'" (click)="changeView('expenses')">Dépenses</button>
+        <button class="btn btn-sm" [class.btn-primary]="selectedView === 'revenues'" (click)="changeView('revenues')">Revenus</button>
+        <button class="btn btn-sm" [class.btn-primary]="selectedView === 'both'" (click)="changeView('both')">Les deux</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <!-- Résumé des totaux -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="budget-summary">
+          <div class="title">
+            <i class="bi bi-arrow-up-circle text-danger"></i> Dépenses
+          </div>
+          <div class="amounts">
+            <div class="budget">
+              <span class="label">Budget</span>
+              <span class="value">{{ formatCurrency(totals.budgetedExpenses) }}</span>
+            </div>
+            <div class="actual">
+              <span class="label">Réel</span>
+              <span class="value">{{ formatCurrency(totals.actualExpenses) }}</span>
+            </div>
+            <div class="variance" [ngClass]="getVarianceClass(totals.expensesVariance)">
+              <span class="label">Écart</span>
+              <span class="value">{{ formatCurrency(totals.expensesVariance) }}</span>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress">
+              <div class="progress-bar" 
+                   [ngClass]="{'bg-success': (totals.actualExpenses / totals.budgetedExpenses * 100) < 90, 
+                              'bg-warning': (totals.actualExpenses / totals.budgetedExpenses * 100) >= 90 && (totals.actualExpenses / totals.budgetedExpenses * 100) <= 100,
+                              'bg-danger': (totals.actualExpenses / totals.budgetedExpenses * 100) > 100}"
+                   [style.width.%]="(totals.actualExpenses / totals.budgetedExpenses * 100) > 100 ? 100 : (totals.actualExpenses / totals.budgetedExpenses * 100)">
+              </div>
+            </div>
+            <div class="progress-label">
+              {{ (totals.actualExpenses / totals.budgetedExpenses * 100).toFixed(1) }}% utilisé
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="budget-summary">
+          <div class="title">
+            <i class="bi bi-arrow-down-circle text-success"></i> Revenus
+          </div>
+          <div class="amounts">
+            <div class="budget">
+              <span class="label">Budget</span>
+              <span class="value">{{ formatCurrency(totals.budgetedRevenues) }}</span>
+            </div>
+            <div class="actual">
+              <span class="label">Réel</span>
+              <span class="value">{{ formatCurrency(totals.actualRevenues) }}</span>
+            </div>
+            <div class="variance" [ngClass]="getVarianceClass(totals.revenuesVariance)">
+              <span class="label">Écart</span>
+              <span class="value">{{ formatCurrency(totals.revenuesVariance) }}</span>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress">
+              <div class="progress-bar" 
+                   [ngClass]="{'bg-danger': (totals.actualRevenues / totals.budgetedRevenues * 100) < 90, 
+                              'bg-warning': (totals.actualRevenues / totals.budgetedRevenues * 100) >= 90 && (totals.actualRevenues / totals.budgetedRevenues * 100) < 100,
+                              'bg-success': (totals.actualRevenues / totals.budgetedRevenues * 100) >= 100}"
+                   [style.width.%]="(totals.actualRevenues / totals.budgetedRevenues * 100) > 100 ? 100 : (totals.actualRevenues / totals.budgetedRevenues * 100)">
+              </div>
+            </div>
+            <div class="progress-label">
+              {{ (totals.actualRevenues / totals.budgetedRevenues * 100).toFixed(1) }}% atteint
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Détail des dépenses -->
+    <div *ngIf="selectedView === 'expenses' || selectedView === 'both'" class="mb-4">
+      <h6 class="mb-3">Détail des dépenses</h6>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Catégorie</th>
+              <th class="text-end">Budget</th>
+              <th class="text-end">Réel</th>
+              <th class="text-end">Écart</th>
+              <th class="text-center">% Utilisé</th>
+              <th class="text-center">Tendance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let category of expenseCategories">
+              <td>{{ category.name }}</td>
+              <td class="text-end">{{ formatCurrency(category.budgeted) }}</td>
+              <td class="text-end">{{ formatCurrency(category.actual) }}</td>
+              <td class="text-end" [ngClass]="getVarianceClass(category.variance)">
+                {{ formatCurrency(category.variance) }}
+              </td>
+              <td class="text-center" [ngClass]="getPercentClass(category)">
+                <div class="progress">
+                  <div class="progress-bar" 
+                       [ngClass]="{'bg-success': category.percentUsed < 90, 
+                                  'bg-warning': category.percentUsed >= 90 && category.percentUsed <= 100,
+                                  'bg-danger': category.percentUsed > 100}"
+                       [style.width.%]="category.percentUsed > 100 ? 100 : category.percentUsed">
+                  </div>
+                </div>
+                <small>{{ category.percentUsed.toFixed(1) }}%</small>
+              </td>
+              <td class="text-center">
+                <i class="bi" [ngClass]="getTrendIcon(category.trend) + ' ' + getTrendClass(category.trend, true)"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Détail des revenus -->
+    <div *ngIf="selectedView === 'revenues' || selectedView === 'both'">
+      <h6 class="mb-3">Détail des revenus</h6>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Catégorie</th>
+              <th class="text-end">Budget</th>
+              <th class="text-end">Réel</th>
+              <th class="text-end">Écart</th>
+              <th class="text-center">% Atteint</th>
+              <th class="text-center">Tendance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let category of revenueCategories">
+              <td>{{ category.name }}</td>
+              <td class="text-end">{{ formatCurrency(category.budgeted) }}</td>
+              <td class="text-end">{{ formatCurrency(category.actual) }}</td>
+              <td class="text-end" [ngClass]="getVarianceClass(category.variance)">
+                {{ formatCurrency(category.variance) }}
+              </td>
+              <td class="text-center" [ngClass]="getPercentClass(category)">
+                <div class="progress">
+                  <div class="progress-bar" 
+                       [ngClass]="{'bg-danger': category.percentUsed < 90, 
+                                  'bg-warning': category.percentUsed >= 90 && category.percentUsed < 100,
+                                  'bg-success': category.percentUsed >= 100}"
+                       [style.width.%]="category.percentUsed > 100 ? 100 : category.percentUsed">
+                  </div>
+                </div>
+                <small>{{ category.percentUsed.toFixed(1) }}%</small>
+              </td>
+              <td class="text-center">
+                <i class="bi" [ngClass]="getTrendIcon(category.trend) + ' ' + getTrendClass(category.trend, false)"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer text-end">
+    <button class="btn btn-sm btn-outline-primary me-2">
+      <i class="bi bi-file-earmark-spreadsheet"></i> Exporter
+    </button>
+    <button class="btn btn-sm btn-primary">
+      <i class="bi bi-gear"></i> Configurer
+    </button>
+  </div>
+</div>

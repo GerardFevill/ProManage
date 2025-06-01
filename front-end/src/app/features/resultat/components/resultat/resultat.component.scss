@@ -1,0 +1,55 @@
+.resultat-container {
+  padding: 2rem;
+
+  .filters {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border-radius: 0.5rem;
+
+    .periode-n, .periode-n1 {
+      h3 {
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+
+        label {
+          font-weight: 500;
+          color: var(--text-primary);
+        }
+
+        input {
+          padding: 0.5rem;
+          border: 1px solid var(--border-color);
+          border-radius: 0.25rem;
+          background-color: var(--bg-primary);
+          color: var(--text-primary);
+
+          &:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+          }
+        }
+      }
+    }
+  }
+
+  .error-message {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--bg-error);
+    border: 1px solid var(--border-error);
+    border-radius: 0.5rem;
+    color: var(--text-error);
+  }
+}

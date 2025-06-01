@@ -1,0 +1,310 @@
+.dark-table-container {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--surface-card);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  
+  // Barre de recherche
+  .search-container {
+    padding: 1rem 1rem 0;
+    
+    .input-group-text {
+      background-color: transparent;
+      border-right: none;
+      color: var(--text-secondary);
+    }
+    
+    .form-control {
+      border-left: none;
+      background-color: var(--surface-hover);
+      color: var(--text-primary);
+      
+      &:focus {
+        box-shadow: none;
+        border-color: var(--surface-border);
+      }
+      
+      &::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.7;
+      }
+    }
+  }
+  
+  // Indicateur de chargement
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    
+    .loading-spinner {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      animation: spin 1.5s linear infinite;
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    }
+    
+    .loading-text {
+      font-size: 0.9rem;
+    }
+  }
+  
+  // Tableau
+  .table-responsive {
+    margin-bottom: 0;
+  }
+  
+  .table {
+    margin-bottom: 0;
+    color: var(--text-primary);
+    
+    th, td {
+      padding: 0.75rem 1rem;
+      vertical-align: middle;
+      border-color: var(--surface-border);
+    }
+    
+    thead {
+      background-color: rgb(33, 37, 41);
+      color: white;
+      
+      tr {
+        background-color: rgb(33, 37, 41);
+      }
+      
+      th {
+        background-color: rgb(33, 37, 41);
+        font-weight: 600;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        border-top: none;
+        color: white !important;
+        border-color: rgb(52, 58, 64);
+        
+        &.sortable {
+          cursor: pointer;
+          user-select: none;
+          
+          &:hover {
+            background-color: rgb(52, 58, 64);
+          }
+        }
+        
+        .sort-icon {
+          font-size: 0.8rem;
+          opacity: 0.7;
+          margin-left: 0.5rem;
+          color: #90cdf4; /* Bleu clair pour l'icône */
+        }
+      }
+    }
+    
+    tbody {
+      tr {
+        transition: background-color 0.2s ease;
+        
+        &.dark-row {
+          background-color: #1a1f2c;
+          color: white;
+          
+          td {
+            color: white !important;
+            border-color: #242b3d;
+          }
+          
+          &:hover {
+            background-color: #242b3d;
+          }
+        }
+        
+        &:hover {
+          background-color: var(--surface-hover);
+        }
+        
+        &.table-danger {
+          background-color: #1a1f2c;
+          
+          &:hover {
+            background-color: #242b3d;
+          }
+        }
+        
+        &.table-warning {
+          background-color: #1a1f2c;
+          
+          &:hover {
+            background-color: #242b3d;
+          }
+        }
+        
+        &.table-success {
+          background-color: #1a1f2c;
+          
+          &:hover {
+            background-color: #242b3d;
+          }
+        }
+        
+        &.table-info {
+          background-color: #1a1f2c;
+          
+          &:hover {
+            background-color: #242b3d;
+          }
+        }
+      }
+    }
+    
+    // Colonne d'actions
+    .actions-column {
+      width: 1%;
+      white-space: nowrap;
+      text-align: right;
+      
+      .btn-group {
+        .btn {
+          padding: 0.25rem 0.4rem;
+          line-height: 1;
+          border-radius: 4px;
+          margin-right: 0.25rem;
+          
+          &:last-child {
+            margin-right: 0;
+          }
+          
+          i {
+            font-size: 0.9rem;
+            color: white;
+          }
+          
+          &.btn-outline-primary {
+            color: #2196F3;
+            border-color: transparent;
+            
+            &:hover {
+              background-color: rgba(33, 150, 243, 0.1);
+              border-color: rgba(33, 150, 243, 0.3);
+            }
+          }
+          
+          &.btn-outline-secondary {
+            color: var(--text-secondary);
+            border-color: transparent;
+            
+            &:hover {
+              background-color: var(--surface-hover);
+              border-color: var(--surface-border);
+            }
+          }
+          
+          &.btn-outline-danger {
+            color: #ef4444;
+            border-color: transparent;
+            
+            &:hover {
+              background-color: rgba(239, 68, 68, 0.1);
+              border-color: rgba(239, 68, 68, 0.3);
+            }
+          }
+        }
+      }
+    }
+    
+    // État vide
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 0;
+      color: var(--text-secondary);
+      
+      i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.5;
+      }
+      
+      p {
+        margin-bottom: 0;
+        font-size: 0.9rem;
+      }
+    }
+    
+    // Badges de statut
+    .badge {
+      padding: 0.4rem 0.6rem;
+      font-weight: 500;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      
+      &.status-success {
+        background-color: rgba(34, 197, 94, 0.15);
+        color: #22c55e;
+      }
+      
+      &.status-danger {
+        background-color: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+      }
+      
+      &.status-warning {
+        background-color: rgba(245, 158, 11, 0.15);
+        color: #f59e0b;
+      }
+      
+      &.status-info {
+        background-color: rgba(33, 150, 243, 0.15);
+        color: #2196F3;
+      }
+    }
+  }
+  
+  // Icônes personnalisées
+  .payment-type-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    
+    &.client {
+      background-color: rgba(34, 197, 94, 0.1);
+      
+      i {
+        color: #22c55e;
+      }
+    }
+    
+    &.supplier {
+      background-color: rgba(239, 68, 68, 0.1);
+      
+      i {
+        color: #ef4444;
+      }
+    }
+  }
+  
+  // Avatar d'entité
+  .entity-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: rgba(33, 150, 243, 0.1);
+    color: #2196F3;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+}

@@ -1,0 +1,190 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <div>
+      <h5 class="mb-0">Échéancier</h5>
+      <small>Suivi des factures clients et fournisseurs</small>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+      <div class="btn-group">
+        <button class="btn btn-sm" [class.btn-primary]="selectedPeriod === '7d'" (click)="setPeriod('7d')">7j</button>
+        <button class="btn btn-sm" [class.btn-primary]="selectedPeriod === '30d'" (click)="setPeriod('30d')">30j</button>
+        <button class="btn btn-sm" [class.btn-primary]="selectedPeriod === '90d'" (click)="setPeriod('90d')">90j</button>
+        <button class="btn btn-sm" [class.btn-primary]="selectedPeriod === 'all'" (click)="setPeriod('all')">Tout</button>
+      </div>
+      <div class="dropdown">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-sort-down me-1"></i> Trier
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
+          <li><a class="dropdown-item" href="javascript:void(0)" (click)="sortBy('dueDate')">Date d'échéance</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0)" (click)="sortBy('amount')">Montant</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0)" (click)="sortBy('entity')">Entité</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0)" (click)="sortBy('status')">Statut</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <!-- Résumé des totaux -->
+    <div class="row mb-4">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+        <app-total-box
+          label="À recevoir"
+          [amount]="totals.clientsReceivable"
+          icon="bi-arrow-down-circle"
+          iconColor="#2196F3">
+        </app-total-box>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 mb-3 mb-lg-0">
+        <app-total-box
+          label="À payer"
+          [amount]="totals.suppliersPayable"
+          icon="bi-arrow-up-circle"
+          iconColor="#2196F3">
+        </app-total-box>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 mb-3 mb-lg-0">
+        <app-total-box
+          label="À échéance"
+          [amount]="totals.pendingTotal"
+          icon="bi-clock-history"
+          iconColor="#f59e0b"
+          type="warning">
+        </app-total-box>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 mb-3 mb-lg-0">
+        <app-total-box
+          label="En retard"
+          [amount]="totals.overdueTotal"
+          icon="bi-exclamation-circle"
+          iconColor="#ef4444"
+          type="danger">
+        </app-total-box>
+      </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="filters mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="mb-0">Filtres</h6>
+        <button class="btn btn-sm btn-link" (click)="resetFilters()" style="color: #2196F3;">
+          <i class="bi bi-arrow-counterclockwise me-1"></i>Réinitialiser
+        </button>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <div class="filter-pill" [class.active]="activeFilters.clients" (click)="toggleFilter('clients')">
+          <i class="bi bi-person me-1"></i> Clients
+        </div>
+        <div class="filter-pill" [class.active]="activeFilters.suppliers" (click)="toggleFilter('suppliers')">
+          <i class="bi bi-building me-1"></i> Fournisseurs
+        </div>
+        <div class="filter-pill" [class.active]="activeFilters.pending" (click)="toggleFilter('pending')">
+          <i class="bi bi-clock me-1"></i> À échéance
+        </div>
+        <div class="filter-pill" [class.active]="activeFilters.overdue" (click)="toggleFilter('overdue')">
+          <i class="bi bi-exclamation-circle me-1"></i> En retard
+        </div>
+        <div class="filter-pill" [class.active]="activeFilters.partial" (click)="toggleFilter('partial')">
+          <i class="bi bi-pie-chart me-1"></i> Partiels
+        </div>
+        <div class="filter-pill" [class.active]="activeFilters.paid" (click)="toggleFilter('paid')">
+          <i class="bi bi-check-circle me-1"></i> Payés
+        </div>
+      </div>
+      <div class="mt-3">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text" id="search-addon"><i class="bi bi-search"></i></span>
+          <input type="text" class="form-control" placeholder="Rechercher..." [(ngModel)]="searchTerm" aria-label="Rechercher" aria-describedby="search-addon">
+        </div>
+      </div>
+    </div>
+
+    <!-- Liste des échéances avec le composant dark-data-table -->
+    <app-dark-data-table
+      [columns]="tableColumns"
+      [data]="getFilteredPayments()"
+      [showSearch]="false"
+      [sortField]="sortCriteria"
+      [sortDirection]="sortDirection"
+      [rowClass]="getRowClass"
+      [darkRows]="true"
+      [actions]="tableActions"
+      [showActions]="true"
+      (sort)="onSort($event)"
+      (search)="searchTerm = $event">
+      
+      <!-- Template personnalisé pour la colonne Type -->
+      <ng-template #typeColumnTemplate let-payment>
+        <div class="d-flex align-items-center">
+          <span class="payment-type-icon me-2" [class.client]="payment.type === 'client'" [class.supplier]="payment.type === 'supplier'">
+            <i class="bi" [ngClass]="{'bi-arrow-down-circle': payment.type === 'client', 'bi-arrow-up-circle': payment.type === 'supplier'}"></i>
+          </span>
+          <span>{{ payment.type === 'client' ? 'Client' : 'Fournisseur' }}</span>
+        </div>
+      </ng-template>
+      
+      <!-- Template personnalisé pour la colonne Entité -->
+      <ng-template #entityColumnTemplate let-payment>
+        <div class="d-flex align-items-center">
+          <div class="entity-avatar me-2">{{ payment.entity.charAt(0) }}</div>
+          <span>{{ payment.entity }}</span>
+        </div>
+      </ng-template>
+      
+      <!-- Template personnalisé pour la colonne Échéance -->
+      <ng-template #dueDateColumnTemplate let-payment>
+        <div>
+          {{ payment.dueDate | date:'dd/MM/yyyy' }}
+          <small class="d-block" [ngClass]="{'text-danger': payment.daysToDue !== undefined && payment.daysToDue < 0, 'text-warning': payment.daysToDue !== undefined && payment.daysToDue >= 0 && payment.daysToDue <= 7}">
+            {{ getDaysText(payment.daysToDue) }}
+          </small>
+        </div>
+      </ng-template>
+      
+      <!-- Template personnalisé pour la colonne Statut -->
+      <ng-template #statusColumnTemplate let-payment>
+        <span class="badge" [ngClass]="{
+          'bg-danger': payment.status === 'overdue',
+          'bg-warning': payment.status === 'pending',
+          'bg-success': payment.status === 'paid',
+          'bg-info': payment.status === 'partial'
+        }">
+          {{ getStatusLabel(payment.status) }}
+        </span>
+      </ng-template>
+      
+      <!-- Template pour les actions -->
+      <ng-template #actionsTemplate let-payment>
+        <div class="btn-group">
+          <button class="btn btn-sm btn-outline-primary" title="Voir les détails">
+            <i class="bi bi-eye"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-primary" title="Marquer comme payé">
+            <i class="bi bi-check-circle"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-secondary" title="Plus d'options">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+        </div>
+      </ng-template>
+    </app-dark-data-table>
+  </div>
+
+  <div class="card-footer d-flex justify-content-between align-items-center">
+    <div>
+      <span >{{ getFilteredPayments().length }} échéances affichées</span>
+    </div>
+    <div>
+      <button class="btn btn-sm btn-outline-primary me-2">
+        <i class="bi bi-printer me-1"></i> Imprimer
+      </button>
+      <button class="btn btn-sm btn-outline-primary me-2">
+        <i class="bi bi-download me-1"></i> Exporter
+      </button>
+      <button class="btn btn-sm btn-primary">
+        <i class="bi bi-plus-circle me-1"></i> Nouvelle échéance
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<footer class="footer-bar">
+  <div class="container-fluid">
+    <div class="text-start">
+      <ng-container *ngIf="companyName; else pasDeSelection">
+        {{ companyName }}{{ fiscalYear ? ' - ' + fiscalYear : '' }}
+      </ng-container>
+      <ng-template #pasDeSelection>
+        <span class="text-muted-footer">Aucune société sélectionnée</span>
+      </ng-template>
+    </div>
+  </div>
+</footer>

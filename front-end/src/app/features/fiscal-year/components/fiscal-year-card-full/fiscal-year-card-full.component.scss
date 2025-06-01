@@ -1,0 +1,136 @@
+.fiscal-year-card {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-header {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+
+    h4 {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 500;
+
+      &.status-active {
+        background-color: #22c55e;
+        color: white;
+      }
+
+      &.status-pending {
+        background-color: #f59e0b;
+        color: white;
+      }
+
+      &.status-closed {
+        background-color: #64748b;
+        color: white;
+      }
+    }
+  }
+
+  .card-body {
+    padding: 1rem;
+
+    .info-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .info-group {
+      flex: 1;
+
+      &.full-width {
+        width: 100%;
+      }
+
+      label {
+        display: block;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .value {
+        color: var(--text-primary);
+        font-size: 1rem;
+
+        &.notes {
+          font-size: 0.875rem;
+          line-height: 1.5;
+          white-space: pre-line;
+        }
+      }
+    }
+  }
+
+  .card-actions {
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    border-top: 1px solid var(--border-color);
+
+    .btn-edit, .btn-delete {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+
+      i {
+        font-size: 1rem;
+      }
+    }
+
+    .btn-edit {
+      background: var(--primary-light);
+      color: var(--primary);
+      border: none;
+
+      &:hover {
+        background: var(--primary-hover);
+        color: white;
+      }
+    }
+
+    .btn-delete {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: none;
+
+      &:hover {
+        background: var(--danger);
+        color: white;
+      }
+    }
+  }
+}

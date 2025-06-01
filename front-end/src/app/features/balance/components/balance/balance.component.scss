@@ -1,0 +1,103 @@
+.balance-container {
+  padding: 2rem;
+  
+  .filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border-radius: 0.5rem;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      input {
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.25rem;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+
+        &:focus {
+          outline: none;
+          border-color: var(--accent-primary);
+        }
+      }
+    }
+  }
+
+  .balance-table {
+    background-color: var(--bg-secondary);
+    border-radius: 0.5rem;
+    overflow: hidden;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th, td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      th {
+        background-color: var(--bg-tertiary);
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      td {
+        color: var(--text-secondary);
+
+        &.amount-cell {
+          text-align: right;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+          font-size: 0.85rem;
+
+          &.debit {
+            color: var(--debit-color, #2196f3);
+            opacity: 0.8;
+          }
+
+          &.credit {
+            color: var(--credit-color, #ff9800);
+            opacity: 0.8;
+          }
+        }
+
+        &.balance-cell {
+          text-align: right;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+          font-weight: bold;
+          font-size: 1rem;
+
+          &.positive { color: #4fc3f7; }  
+          &.negative { color: #ef9a9a; }  
+          &.zero { color: #9e9e9e; }      
+        }
+      }
+
+      tbody tr:hover {
+        background-color: var(--bg-hover);
+      }
+
+      tfoot {
+        font-weight: 500;
+        background-color: var(--bg-tertiary);
+
+        td {
+          color: var(--text-primary);
+        }
+      }
+    }
+  }
+}

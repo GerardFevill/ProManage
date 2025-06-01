@@ -1,0 +1,32 @@
+<div class="transaction-container">
+  <div class="transaction-list">
+    <div class="list-header">
+      <h2>Liste des transactions</h2>
+      <button class="btn-add" [routerLink]="['new']">
+        <i class="bi bi-plus"></i>
+        Nouvelle transaction
+      </button>
+    </div>
+   
+    <div class="transactions-container">
+      <app-data-table
+        [columns]="tableColumns"
+        [data]="(transactions$ | async) || []"
+        [loading]="(loading$ | async) || false"
+        [actions]="tableActions"
+        [showActions]="true">
+      ></app-data-table>
+    </div>
+
+    <app-transaction-delete-dialog
+      *ngIf="showDeleteDialog && transactionToDelete"
+      [transactionReference]="transactionToDelete.reference ?? ''"
+      [transactionDate]="transactionToDelete.date"
+      [transactionAmount]="getTransactionAmount()"
+      (confirm)="onConfirmDelete()"
+      (cancel)="onCancelDelete()">
+    </app-transaction-delete-dialog>
+  </div>
+
+  <router-outlet></router-outlet>
+</div>
