@@ -23,6 +23,38 @@ services:
     networks:
       - promanage_network
 
+  backend:
+    image: ${DOCKERHUB_USERNAME:-gerardfevill}/promanage-backend:latest
+    container_name: promanage_backend
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://promanage_user:promanage_password@postgres:5432/promanage_db
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - promanage_network
+
+  frontend:
+    image: ${DOCKERHUB_USERNAME:-gerardfevill}/promanage-frontend:latest
+    container_name: promanage_frontend
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - promanage_network
+
 volumes:
   postgres_data:
     name: promanage_postgres_data
