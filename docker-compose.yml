@@ -25,15 +25,16 @@ services:
 
   backend:
     image: ${DOCKERHUB_USERNAME:-gerardfevill}/promanage-backend:latest
-    container_name: promanage_backend
     build:
       context: ./back-end
       dockerfile: Dockerfile
+    container_name: promanage_backend
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgres://promanage_user:promanage_password@postgres:5432/promanage_db
-    ports:
-      - "3000:3000"
+    # Exposer uniquement sur le réseau interne, pas sur l'hôte
+    expose:
+      - "3000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -43,13 +44,29 @@ services:
 
   frontend:
     image: ${DOCKERHUB_USERNAME:-gerardfevill}/promanage-frontend:latest
-    container_name: promanage_frontend
     build:
       context: ./front-end
       dockerfile: Dockerfile
-    ports:
-      - "80:80"
+    container_name: promanage_frontend
+    # Exposer uniquement sur le réseau interne, pas sur l'hôte
+    expose:
+      - "80"
     depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - promanage_network
+
+  # Nginx proxy pour accéder à l'application
+  nginx:
+    image: nginx:alpine
+    container_name: promanage_nginx
+    ports:
+      - "80:80"  # Port principal pour accéder à l'application
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
       - backend
     restart: unless-stopped
     networks:

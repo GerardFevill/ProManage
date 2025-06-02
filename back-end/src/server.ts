@@ -28,10 +28,10 @@ app.use(express.json());
 
 // Database configuration
 const pool = new Pool({
-  user: process.env.DB_USER || 'postgres',
-  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'promanage_user',
+  host: process.env.DB_HOST || 'postgres', // Nom du service dans docker-compose.yml
   database: 'promanage_db',
-  password: process.env.DB_PASSWORD || 'postgres',
+  password: process.env.DB_PASSWORD || 'promanage_password',
   port: parseInt(process.env.DB_PORT || '5432', 10),
 });
 
